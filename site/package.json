@@ -1,0 +1,25 @@
+{
+  "name": "seedicon-site",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Marketing site + playground for the seedicon package. Never published to npm.",
+  "scripts": {
+    "//prebuild": "The site imports seedicon from the parent folder (file:..), so the package has to be built before Next.js compiles. Once seedicon is on npm you can drop this script and pin a published version in dependencies instead.",
+    "prebuild": "cd .. && npm ci --no-audit --no-fund && npm run build",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "seedicon": "file:.."
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.2"
+  }
+}
