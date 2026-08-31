@@ -1,9 +1,10 @@
-import { rngFromSeed } from "./hash.js";
+import { hashString, rngFromSeed } from "./hash.js";
 import { renderPixels } from "./styles/pixels.js";
-import { renderGeometric } from "./styles/geometric.js";
+import { renderRing } from "./styles/ring.js";
+import { renderMarble } from "./styles/marble.js";
 import { renderGradient } from "./styles/gradient.js";
 
-export type SeediconStyle = "pixels" | "geometric" | "gradient";
+export type SeediconStyle = "pixels" | "ring" | "marble" | "gradient";
 
 export interface SeediconOptions {
   /**
@@ -16,14 +17,20 @@ export interface SeediconOptions {
   style?: SeediconStyle;
   /** Output width/height in SVG user units. Defaults to 64. */
   size?: number;
-  /** Rounds the corners of the whole avatar. Defaults to 0 (square/circle
-   * per style — geometric is already circular via its own clip path). */
+  /**
+   * Rounds the corners of the whole avatar, in the same units as `size`.
+   * Defaults to 0 (a plain square). Use `size / 2` for a circle, or
+   * something like `size * 0.2` for the rounded-square look most apps
+   * use for profile pictures. Every style renders edge-to-edge, so this
+   * is the single place cropping is decided.
+   */
   radius?: number;
 }
 
 const RENDERERS: Record<SeediconStyle, (rng: ReturnType<typeof rngFromSeed>, size: number) => string> = {
   pixels: renderPixels,
-  geometric: renderGeometric,
+  ring: renderRing,
+  marble: renderMarble,
   gradient: renderGradient,
 };
 
@@ -52,9 +59,19 @@ export function generateAvatar(options: SeediconOptions): string {
   }
 
   const body = render(rng, size);
+
+  // The clip path id has to be unique per avatar, not per package: SVG
+  // ids share one global namespace across the whole document, so a fixed
+  // id would make every avatar on a page reuse the FIRST one's clip
+  // rectangle — a list of 40px avatars under a 24px one would all get
+  // cropped to 24px. Deriving the id from the options keeps output
+  // deterministic (same input, same id) while making collisions between
+  // different avatars impossible in practice.
+  const clipId = `seedicon-radius-${hashString(`${seed}|${style}|${size}|${radius}`).toString(36)}`;
+
   const clip =
     radius > 0
-      ? `<defs><clipPath id="seedicon-radius"><rect width="${size}" height="${size}" rx="${radius}"/></clipPath></defs><g clip-path="url(#seedicon-radius)">${body}</g>`
+      ? `<defs><clipPath id="${clipId}"><rect width="${size}" height="${size}" rx="${radius}"/></clipPath></defs><g clip-path="url(#${clipId})">${body}</g>`
       : body;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="Avatar">${clip}</svg>`;
@@ -75,6 +92,7 @@ export function generateAvatarDataUri(options: SeediconOptions): string {
 
 export const SEEDICON_STYLES: readonly SeediconStyle[] = [
   "pixels",
-  "geometric",
+  "ring",
+  "marble",
   "gradient",
 ];

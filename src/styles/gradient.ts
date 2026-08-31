@@ -9,7 +9,10 @@ import { generatePalette } from "../color.js";
 export function renderGradient(rng: Rng, size: number): string {
   const palette = generatePalette(rng, rng.next() > 0.5 ? 3 : 2);
   const angle = rng.int(0, 360);
-  const gradientId = `seedicon-gradient-${rng.int(0, 1_000_000)}`;
+  // Size is part of the id so two renders of the same seed at different
+  // sizes never share a <linearGradient> definition — SVG ids are
+  // document-global and the first definition wins for every reference.
+  const gradientId = `seedicon-gradient-${rng.int(0, 1_000_000)}-${size}`;
 
   // Convert an angle to SVG gradient coordinates (x1,y1)-(x2,y2) on the
   // unit square, so the gradient direction matches the seed's angle.
