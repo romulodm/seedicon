@@ -1,0 +1,36 @@
+name: Publish
+
+# Disparado por uma tag "v*" (ex: v0.1.1), criada automaticamente pelo
+# `npm version patch/minor/major` + `git push --follow-tags`.
+on:
+  push:
+    tags:
+      - "v*"
+
+# id-token: write é o que permite o OIDC do Trusted Publishing do npm —
+# sem isso, e sem nenhum NPM_TOKEN guardado como secret, o publish falha.
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+          cache: "npm"
+
+      # Trusted Publishing exige npm CLI >= 11.5.1; garante a versão
+      # mesmo que a bundled com o Node da imagem do runner esteja atrás.
+      - run: npm install -g npm@latest
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm publish
