@@ -185,8 +185,8 @@ section .lede {
 
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 24px 20px;
 }
 
 .gallery-col h3 {
@@ -274,12 +274,12 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 
 .styles {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 6px;
 }
 
 .style-btn {
-  padding: 8px 10px;
+  padding: 8px 6px;
   border-radius: 8px;
   border: 1px solid var(--border-strong);
   background: var(--bg-input);

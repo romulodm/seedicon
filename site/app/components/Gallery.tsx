@@ -9,9 +9,14 @@ import { generateAvatar, SEEDICON_STYLES } from "seedicon";
 
 /** One short line per style, shown under its column heading. */
 const DESCRIPTIONS: Record<string, string> = {
-  pixels: "Mirrored pixel grid — the classic Blockies / GitHub look.",
+  pixels: "Mirrored pixel grid. Output-compatible with blockies.",
+  identicon: "Five symmetric rows — the classic dev-tool identicon.",
+  jdenticon: "Geometric shapes, four-fold symmetry. Compatible with Jdenticon.",
+  stellar: "7×7 mirrored bit grid. Compatible with Stellar addresses.",
   ring: "Concentric rings; the seed picks colors, count and thickness.",
+  lifehash: "A pattern grown with a Game of Life automaton.",
   marble: "Two blurred organic blobs over a flat color.",
+  waves: "Layered wave bands in shades of a single hue.",
   gradient: "A soft two or three stop diagonal gradient.",
 };
 
@@ -22,7 +27,6 @@ const SEEDS = [
   "550e8400-e29b-41d4-a716-446655440000",
   "ada@example.com",
   "user-000001",
-  "user-000002",
 ];
 
 export function Gallery() {

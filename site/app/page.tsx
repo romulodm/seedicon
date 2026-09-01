@@ -130,9 +130,11 @@ export default async function Home() {
         <section>
           <h2>Styles</h2>
           <p className="lede">
-            Four styles, all rendered on the server here — seedicon has no
-            canvas and no <code>window</code> access, so it works during
-            SSR in Next.js, Remix or anything else.
+            Nine styles, all rendered on the server here — seedicon has
+            no canvas and no <code>window</code> access, so it works
+            during SSR in Next.js, Remix or anything else. Three of them
+            are output-compatible with an existing library, so you can
+            swap it out without changing anyone&apos;s avatar.
           </p>
           <Gallery />
         </section>
@@ -141,7 +143,8 @@ export default async function Home() {
           <h2>Usage</h2>
           <p className="lede">
             Two functions and one optional React component. That is the
-            whole API.
+            whole API — plus one entry point per style, if you only use
+            one and care about bundle size.
           </p>
           <div className="code">
             <pre>
@@ -157,7 +160,12 @@ export default async function Home() {
               {"const src = generateAvatarDataUri({ seed: user.id });\n\n"}
               <span className="cmt">{"// Or the React component\n"}</span>
               {'import { Avatar } from "seedicon/react";\n\n'}
-              {"<Avatar seed={user.id} size={40} radius={20} />"}
+              {"<Avatar seed={user.id} size={40} radius={20} />\n\n"}
+              <span className="cmt">
+                {"// Or one style alone — pulls in nothing else\n"}
+              </span>
+              {'import { ring } from "seedicon/ring";\n\n'}
+              {"const svg = ring({ seed: user.id, size: 40 });"}
             </pre>
           </div>
         </section>
