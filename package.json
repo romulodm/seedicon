@@ -1,22 +1,132 @@
 {
   "name": "seedicon",
   "version": "0.1.0",
-  "description": "Deterministic SVG avatars generated from any string seed (wallet address, UUID, user id) — no image storage, no uploads.",
+  "description": "Deterministic SVG avatars generated from any string seed (wallet address, UUID, user id) \u2014 no image storage, no uploads.",
+  "author": "Romulo de Moraes (https://github.com/romulodm)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romulodm/seedicon.git"
+  },
+  "homepage": "https://github.com/romulodm/seedicon#readme",
+  "bugs": {
+    "url": "https://github.com/romulodm/seedicon/issues"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./react": {
-      "types": "./dist/react.d.ts",
-      "import": "./dist/react.js",
-      "require": "./dist/react.cjs"
-    }
+      "import": {
+        "types": "./dist/react.d.ts",
+        "default": "./dist/react.js"
+      },
+      "require": {
+        "types": "./dist/react.d.cts",
+        "default": "./dist/react.cjs"
+      }
+    },
+    "./pixels": {
+      "import": {
+        "types": "./dist/pixels.d.ts",
+        "default": "./dist/pixels.js"
+      },
+      "require": {
+        "types": "./dist/pixels.d.cts",
+        "default": "./dist/pixels.cjs"
+      }
+    },
+    "./identicon": {
+      "import": {
+        "types": "./dist/identicon.d.ts",
+        "default": "./dist/identicon.js"
+      },
+      "require": {
+        "types": "./dist/identicon.d.cts",
+        "default": "./dist/identicon.cjs"
+      }
+    },
+    "./jdenticon": {
+      "import": {
+        "types": "./dist/jdenticon.d.ts",
+        "default": "./dist/jdenticon.js"
+      },
+      "require": {
+        "types": "./dist/jdenticon.d.cts",
+        "default": "./dist/jdenticon.cjs"
+      }
+    },
+    "./stellar": {
+      "import": {
+        "types": "./dist/stellar.d.ts",
+        "default": "./dist/stellar.js"
+      },
+      "require": {
+        "types": "./dist/stellar.d.cts",
+        "default": "./dist/stellar.cjs"
+      }
+    },
+    "./ring": {
+      "import": {
+        "types": "./dist/ring.d.ts",
+        "default": "./dist/ring.js"
+      },
+      "require": {
+        "types": "./dist/ring.d.cts",
+        "default": "./dist/ring.cjs"
+      }
+    },
+    "./lifehash": {
+      "import": {
+        "types": "./dist/lifehash.d.ts",
+        "default": "./dist/lifehash.js"
+      },
+      "require": {
+        "types": "./dist/lifehash.d.cts",
+        "default": "./dist/lifehash.cjs"
+      }
+    },
+    "./marble": {
+      "import": {
+        "types": "./dist/marble.d.ts",
+        "default": "./dist/marble.js"
+      },
+      "require": {
+        "types": "./dist/marble.d.cts",
+        "default": "./dist/marble.cjs"
+      }
+    },
+    "./waves": {
+      "import": {
+        "types": "./dist/waves.d.ts",
+        "default": "./dist/waves.js"
+      },
+      "require": {
+        "types": "./dist/waves.d.cts",
+        "default": "./dist/waves.cjs"
+      }
+    },
+    "./gradient": {
+      "import": {
+        "types": "./dist/gradient.d.ts",
+        "default": "./dist/gradient.js"
+      },
+      "require": {
+        "types": "./dist/gradient.d.cts",
+        "default": "./dist/gradient.cjs"
+      }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist"
@@ -28,18 +138,24 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run typecheck && npm run test && npm run build"
+    "prepublish": "npm run typecheck && npm run test && npm run build"
   },
   "keywords": [
     "avatar",
     "identicon",
     "blockies",
-    "jazzicon",
+    "jdenticon",
+    "profile-picture",
     "svg",
-    "hash",
     "deterministic",
+    "hash",
+    "seed",
     "wallet",
-    "profile-picture"
+    "ethereum",
+    "stellar",
+    "generative",
+    "ssr",
+    "zero-dependency"
   ],
   "license": "MIT",
   "peerDependencies": {
@@ -51,7 +167,9 @@
     }
   },
   "devDependencies": {
+    "@download/blockies": "^1.0.3",
     "@types/react": "^18.3.12",
+    "jdenticon": "^3.3.0",
     "react": "^18.3.1",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2",
