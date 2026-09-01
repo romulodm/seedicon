@@ -1,9 +1,15 @@
+import { fileURLToPath } from "node:url";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // seedicon ships both ESM and CJS builds, so nothing special is needed
-  // here — this file exists so the defaults are explicit and there is an
-  // obvious place to add config later.
   reactStrictMode: true,
+
+  // The site depends on the package one directory up (`seedicon: file:..`),
+  // so there are two lockfiles in play and Next.js cannot tell on its own
+  // which directory is the real root. Left to guess, it warns on every
+  // build and can trace the wrong tree when bundling for deployment.
+  // Pointing it at the repository root settles both.
+  outputFileTracingRoot: fileURLToPath(new URL("..", import.meta.url)),
 };
 
 export default nextConfig;

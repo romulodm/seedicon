@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "description": "Marketing site + playground for the seedicon package. Never published to npm.",
   "scripts": {
-    "//prebuild": "The site imports seedicon from the parent folder (file:..), so the package has to be built before Next.js compiles. Once seedicon is on npm you can drop this script and pin a published version in dependencies instead.",
-    "prebuild": "cd .. && npm ci --no-audit --no-fund && npm run build",
+    "//prebuild": "Builds the parent package before Next.js compiles, because the site imports it via file:.. and dist/ is gitignored. --include=dev is required: Vercel sets NODE_ENV=production, and npm ci skips devDependencies in that case \u2014 which is where tsup and typescript live.",
+    "prebuild": "cd .. && npm ci --include=dev --no-audit --no-fund && npm run build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
