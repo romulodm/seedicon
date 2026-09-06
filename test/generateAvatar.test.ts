@@ -57,8 +57,59 @@ describe("generateAvatar", () => {
         const svg = generateAvatar({ seed: "check", style, radius: 8 });
         expect(svg).toContain("seedicon-radius");
       });
+
+      it("resolves each shape preset to its radius", () => {
+        const square = generateAvatar({ seed: "check", style, size: 100 });
+        expect(square).toBe(
+          generateAvatar({ seed: "check", style, size: 100, shape: "square" }),
+        );
+        expect(square).not.toContain("seedicon-radius");
+
+        expect(
+          generateAvatar({ seed: "check", style, size: 100, shape: "rounded" }),
+        ).toContain('rx="22"');
+
+        expect(
+          generateAvatar({ seed: "check", style, size: 100, shape: "circle" }),
+        ).toContain('rx="50"');
+      });
     });
   }
+});
+
+describe("shape and radius", () => {
+  it("lets radius override the shape preset", () => {
+    const svg = generateAvatar({
+      seed: "check",
+      size: 100,
+      shape: "circle",
+      radius: 12,
+    });
+    expect(svg).toContain('rx="12"');
+  });
+
+  it("clamps radius to [0, size / 2]", () => {
+    expect(generateAvatar({ seed: "check", size: 100, radius: 999 })).toContain(
+      'rx="50"',
+    );
+    expect(generateAvatar({ seed: "check", size: 100, radius: -5 })).not.toContain(
+      "seedicon-radius",
+    );
+  });
+
+  it("throws on an unknown shape", () => {
+    expect(() =>
+      // @ts-expect-error intentionally invalid at runtime
+      generateAvatar({ seed: "check", shape: "blob" }),
+    ).toThrow();
+  });
+
+  it("keeps the shape proportional to the size", () => {
+    for (const size of [16, 64, 256]) {
+      const svg = generateAvatar({ seed: "check", size, shape: "circle" });
+      expect(svg).toContain(`rx="${size / 2}"`);
+    }
+  });
 });
 
 describe("generateAvatarDataUri", () => {
