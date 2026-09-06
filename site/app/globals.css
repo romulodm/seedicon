@@ -15,9 +15,20 @@
   --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-html, body {
+/* Anchor clicks glide instead of jumping, so it stays obvious that the
+   sidebar entry lighting up belongs to where you just landed. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+html,
+body {
   margin: 0;
   padding: 0;
   background: var(--bg);
@@ -26,7 +37,9 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-a { color: inherit; }
+a {
+  color: inherit;
+}
 
 .wrap {
   max-width: 960px;
@@ -66,11 +79,31 @@ a { color: inherit; }
   transition: color 0.15s;
 }
 
-.nav-links a:hover { color: var(--text); }
+.nav-links a:hover {
+  color: var(--text);
+}
 
 /* ---------- hero ---------- */
 
-.hero { padding: 72px 0 48px; }
+.hero {
+  padding: 72px 0 48px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 48px;
+  align-items: center;
+}
+
+/* Below this the grid would squeeze the copy, and the tiles are
+   decorative — the gallery further down says the same thing better. */
+@media (max-width: 880px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-icons {
+    display: none;
+  }
+}
 
 .hero h1 {
   font-size: clamp(40px, 7vw, 64px);
@@ -88,13 +121,86 @@ a { color: inherit; }
   margin: 0 0 32px;
 }
 
-.hero p strong { color: var(--text); font-weight: 600; }
+.hero p strong {
+  color: var(--text);
+  font-weight: 600;
+}
 
 .hero-row {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
+}
+
+/* ---------- hero icons ---------- */
+
+.hero-icons {
+  display: grid;
+  grid-template-columns: repeat(4, 46px);
+  gap: 10px;
+  line-height: 0;
+}
+
+.hero-icons>span {
+  display: block;
+  opacity: 0.85;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.hero-icons:hover>span {
+  opacity: 0.55;
+}
+
+.hero-icons>span:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+/* ---------- install command ---------- */
+
+.install {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px 11px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.install:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.install code {
+  font: inherit;
+}
+
+.install-icon {
+  display: inline-flex;
+  color: var(--text-faint);
+  transition: color 0.15s;
+}
+
+.install:hover .install-icon {
+  color: var(--text-dim);
+}
+
+.install[data-copied="true"],
+.install[data-copied="true"] .install-icon {
+  color: #6ee7a8;
+}
+
+.install[data-copied="true"] {
+  border-color: rgba(110, 231, 168, 0.4);
 }
 
 .btn {
@@ -113,7 +219,9 @@ a { color: inherit; }
   transition: border-color 0.15s, background 0.15s;
 }
 
-.btn:hover { border-color: var(--accent); }
+.btn:hover {
+  border-color: var(--accent);
+}
 
 .btn-primary {
   background: var(--text);
@@ -121,7 +229,10 @@ a { color: inherit; }
   border-color: var(--text);
 }
 
-.btn-primary:hover { opacity: 0.88; border-color: var(--text); }
+.btn-primary:hover {
+  opacity: 0.88;
+  border-color: var(--text);
+}
 
 /* ---------- stats ---------- */
 
@@ -143,7 +254,9 @@ a { color: inherit; }
   transition: background 0.15s;
 }
 
-a.stat:hover { background: var(--bg-input); }
+a.stat:hover {
+  background: var(--bg-input);
+}
 
 .stat-value {
   font-family: var(--mono);
@@ -162,7 +275,10 @@ a.stat:hover { background: var(--bg-input); }
 
 /* ---------- sections ---------- */
 
-section { padding: 56px 0; border-top: 1px solid var(--border); }
+section {
+  padding: 56px 0;
+  border-top: 1px solid var(--border);
+}
 
 section h2 {
   font-size: 13px;
@@ -210,7 +326,9 @@ section .lede {
   gap: 8px;
 }
 
-.gallery-row > span { line-height: 0; }
+.gallery-row>span {
+  line-height: 0;
+}
 
 /* ---------- playground ---------- */
 
@@ -222,7 +340,9 @@ section .lede {
 }
 
 @media (max-width: 760px) {
-  .pg { grid-template-columns: 1fr; }
+  .pg {
+    grid-template-columns: 1fr;
+  }
 }
 
 .panel {
@@ -232,9 +352,13 @@ section .lede {
   padding: 22px;
 }
 
-.field { margin-bottom: 18px; }
+.field {
+  margin-bottom: 18px;
+}
 
-.field:last-child { margin-bottom: 0; }
+.field:last-child {
+  margin-bottom: 0;
+}
 
 label {
   display: block;
@@ -270,7 +394,10 @@ input[type="text"]:focus {
   border-color: var(--accent);
 }
 
-input[type="range"] { width: 100%; accent-color: var(--accent); }
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
 
 .styles {
   display: grid;
@@ -290,7 +417,9 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   transition: all 0.15s;
 }
 
-.style-btn:hover { color: var(--text); }
+.style-btn:hover {
+  color: var(--text);
+}
 
 .style-btn[data-active="true"] {
   background: var(--text);
@@ -309,7 +438,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   min-height: 190px;
 }
 
-.preview figure { margin: 0; text-align: center; line-height: 0; }
+.preview figure {
+  margin: 0;
+  text-align: center;
+  line-height: 0;
+}
 
 .preview figcaption {
   font-family: var(--mono);
@@ -336,9 +469,17 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   color: #d6d6e4;
 }
 
-.code .cmt { color: var(--text-faint); }
-.code .str { color: #9ae6b4; }
-.code .kw { color: #b39aff; }
+.code .cmt {
+  color: var(--text-faint);
+}
+
+.code .str {
+  color: #9ae6b4;
+}
+
+.code .kw {
+  color: #b39aff;
+}
 
 .copy {
   position: absolute;
@@ -354,9 +495,17 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   cursor: pointer;
 }
 
-.copy:hover { color: var(--text); border-color: var(--accent); }
+.copy:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
 
-.actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
 
 /* ---------- footer ---------- */
 
@@ -371,5 +520,341 @@ footer {
   gap: 12px;
 }
 
-footer a { color: var(--text-dim); text-decoration: none; }
-footer a:hover { color: var(--text); }
+footer a {
+  color: var(--text-dim);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--text);
+}
+
+/* ---------- docs page ---------- */
+
+.doc-head {
+  padding: 56px 0 8px;
+}
+
+.doc-head h1 {
+  font-size: clamp(32px, 5vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0 0 16px;
+  font-weight: 700;
+}
+
+.doc-head p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 620px;
+  margin: 0;
+}
+
+.docs {
+  display: grid;
+  grid-template-columns: 172px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.toc {
+  position: sticky;
+  top: 24px;
+  padding-top: 56px;
+}
+
+.toc nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toc a {
+  font-size: 13px;
+  color: var(--text-faint);
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 7px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.toc a:hover {
+  color: var(--text);
+  background: var(--bg-raised);
+}
+
+/* The section you are currently reading. Set from scroll position by
+   DocsToc, so it tracks reading rather than only reacting to clicks. */
+.toc a[data-active="true"] {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--bg-raised);
+}
+
+@media (max-width: 860px) {
+  .docs {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .toc {
+    position: static;
+    padding: 24px 0 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+  }
+
+  .toc nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .toc a {
+    border: 1px solid var(--border);
+  }
+
+  .toc a[data-active="true"] {
+    border-color: var(--accent);
+  }
+}
+
+/* The docs reuse <section>, but their headings are real headings rather
+   than the small uppercase eyebrows the landing page uses. */
+.doc-section {
+  padding: 48px 0;
+  scroll-margin-top: 24px;
+}
+
+.doc-section h2 {
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--text);
+  font-weight: 650;
+  margin: 0 0 14px;
+  scroll-margin-top: 24px;
+}
+
+.doc-section h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 32px 0 10px;
+  color: var(--text);
+}
+
+.doc-section p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  max-width: 660px;
+  margin: 0 0 16px;
+}
+
+.doc-section p strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.doc-section code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  color: var(--text);
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+.doc-section .code {
+  margin: 0 0 18px;
+}
+
+.doc-section .code code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.doc-section a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.doc-section a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- option tables ---------- */
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 0 0 18px;
+}
+
+table.opts {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  min-width: 520px;
+}
+
+table.opts th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  font-weight: 600;
+  padding: 0 14px 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+table.opts td {
+  padding: 12px 14px 12px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+table.opts td:first-child {
+  white-space: nowrap;
+}
+
+/* ---------- samples ---------- */
+
+.sample {
+  margin: 0;
+  line-height: 0;
+  text-align: center;
+}
+
+.sample figcaption {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 10px;
+  line-height: 1;
+}
+
+.shape-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  align-items: flex-end;
+  padding: 8px 0 26px;
+}
+
+/* ---------- style cards ---------- */
+
+.style-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  padding: 22px;
+  margin: 0 0 16px;
+}
+
+.style-card:target {
+  border-color: var(--accent);
+}
+
+.style-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.style-head h3 {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.badge {
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--text-faint);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 3px 9px;
+  text-decoration: none;
+}
+
+.doc-section a.badge {
+  color: var(--text-faint);
+}
+
+.doc-section a.badge:hover {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.badge-compat {
+  color: #9ae6b4;
+  border-color: #2f5c43;
+}
+
+.doc-section a.badge-compat {
+  color: #9ae6b4;
+}
+
+.style-samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.style-card p {
+  max-width: none;
+}
+
+.style-card .good-for {
+  color: var(--text-faint);
+  font-size: 14px;
+}
+
+.shapes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.gallery-col h3 a {
+  text-decoration: none;
+}
+
+.gallery-col h3 a:hover {
+  color: var(--accent);
+}
+
+/* Captions here are wider than the avatars they sit under, so each sample
+   reserves room for its own label instead of colliding with the next. */
+.shape-row .sample {
+  min-width: 116px;
+}
+
+/* Grid children default to min-width:auto, so a wide code block or table
+   would push the whole page sideways instead of scrolling inside itself. */
+.doc-body {
+  min-width: 0;
+}
+
+@media (max-width: 560px) {
+  .nav {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .nav-links {
+    gap: 16px;
+    font-size: 13px;
+  }
+}
