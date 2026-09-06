@@ -15,7 +15,7 @@ import { renderIdenticon } from "../styles/identicon.js";
  * ```ts
  * import { identicon } from "seedicon/identicon";
  *
- * const svg = identicon({ seed: user.id, size: 40, radius: 20 });
+ * const svg = identicon({ seed: user.id, size: 40, shape: "circle" });
  * ```
  */
 export function identicon(options: StyleOptions): string {

@@ -15,7 +15,7 @@ import { renderLifehash } from "../styles/lifehash.js";
  * ```ts
  * import { lifehash } from "seedicon/lifehash";
  *
- * const svg = lifehash({ seed: user.id, size: 40, radius: 20 });
+ * const svg = lifehash({ seed: user.id, size: 40, shape: "circle" });
  * ```
  */
 export function lifehash(options: StyleOptions): string {

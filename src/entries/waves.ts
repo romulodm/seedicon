@@ -15,7 +15,7 @@ import { renderWaves } from "../styles/waves.js";
  * ```ts
  * import { waves } from "seedicon/waves";
  *
- * const svg = waves({ seed: user.id, size: 40, radius: 20 });
+ * const svg = waves({ seed: user.id, size: 40, shape: "circle" });
  * ```
  */
 export function waves(options: StyleOptions): string {

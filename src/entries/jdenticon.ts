@@ -15,7 +15,7 @@ import { renderJdenticon } from "../styles/jdenticon.js";
  * ```ts
  * import { jdenticon } from "seedicon/jdenticon";
  *
- * const svg = jdenticon({ seed: user.id, size: 40, radius: 20 });
+ * const svg = jdenticon({ seed: user.id, size: 40, shape: "circle" });
  * ```
  */
 export function jdenticon(options: StyleOptions): string {

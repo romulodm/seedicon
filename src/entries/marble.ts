@@ -15,7 +15,7 @@ import { renderMarble } from "../styles/marble.js";
  * ```ts
  * import { marble } from "seedicon/marble";
  *
- * const svg = marble({ seed: user.id, size: 40, radius: 20 });
+ * const svg = marble({ seed: user.id, size: 40, shape: "circle" });
  * ```
  */
 export function marble(options: StyleOptions): string {

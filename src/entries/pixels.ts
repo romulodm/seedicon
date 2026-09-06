@@ -15,7 +15,7 @@ import { renderPixels } from "../styles/pixels.js";
  * ```ts
  * import { pixels } from "seedicon/pixels";
  *
- * const svg = pixels({ seed: user.id, size: 40, radius: 20 });
+ * const svg = pixels({ seed: user.id, size: 40, shape: "circle" });
  * ```
  */
 export function pixels(options: StyleOptions): string {

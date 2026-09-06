@@ -15,7 +15,7 @@ import { renderGradient } from "../styles/gradient.js";
  * ```ts
  * import { gradient } from "seedicon/gradient";
  *
- * const svg = gradient({ seed: user.id, size: 40, radius: 20 });
+ * const svg = gradient({ seed: user.id, size: 40, shape: "circle" });
  * ```
  */
 export function gradient(options: StyleOptions): string {

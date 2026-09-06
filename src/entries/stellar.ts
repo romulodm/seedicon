@@ -15,7 +15,7 @@ import { renderStellar } from "../styles/stellar.js";
  * ```ts
  * import { stellar } from "seedicon/stellar";
  *
- * const svg = stellar({ seed: user.id, size: 40, radius: 20 });
+ * const svg = stellar({ seed: user.id, size: 40, shape: "circle" });
  * ```
  */
 export function stellar(options: StyleOptions): string {

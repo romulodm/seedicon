@@ -15,7 +15,7 @@ import { renderRing } from "../styles/ring.js";
  * ```ts
  * import { ring } from "seedicon/ring";
  *
- * const svg = ring({ seed: user.id, size: 40, radius: 20 });
+ * const svg = ring({ seed: user.id, size: 40, shape: "circle" });
  * ```
  */
 export function ring(options: StyleOptions): string {
