@@ -4,13 +4,13 @@
   "version": "0.0.0",
   "description": "Marketing site + playground for the seedicon package. Never published to npm.",
   "scripts": {
-    "//prebuild": "Builds the parent package before Next.js compiles, because the site imports it via file:.. and dist/ is gitignored. --include=dev is required: Vercel sets NODE_ENV=production, and npm ci skips devDependencies in that case \u2014 which is where tsup and typescript live.",
     "prebuild": "cd .. && npm ci --include=dev --no-audit --no-fund && npm run build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
