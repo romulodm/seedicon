@@ -1,4 +1,10 @@
-import { renderAvatar, toDataUri, type StyleOptions, type StyleRenderer } from "./core.js";
+import {
+  renderAvatar,
+  toDataUri,
+  type SeediconShape,
+  type StyleOptions,
+  type StyleRenderer,
+} from "./core.js";
 import { renderPixels } from "./styles/pixels.js";
 import { renderRing } from "./styles/ring.js";
 import { renderMarble } from "./styles/marble.js";
@@ -73,6 +79,13 @@ export function generateAvatarDataUri(options: SeediconOptions): string {
   return toDataUri(generateAvatar(options));
 }
 
+/** Every corner preset `shape` accepts, in the order the docs list them. */
+export const SEEDICON_SHAPES: readonly SeediconShape[] = [
+  "square",
+  "rounded",
+  "circle",
+];
+
 export const SEEDICON_STYLES: readonly SeediconStyle[] = [
   "pixels",
   "identicon",
@@ -85,4 +98,4 @@ export const SEEDICON_STYLES: readonly SeediconStyle[] = [
   "gradient",
 ];
 
-export type { StyleOptions, StyleRenderer } from "./core.js";
+export type { SeediconShape, StyleOptions, StyleRenderer } from "./core.js";
