@@ -141,6 +141,16 @@ export function renderPixels(_rng: Rng, size: number, seed: string): string {
 
   return [
     `<rect width="${size}" height="${size}" fill="${bgcolor}"/>`,
-    ...rects,
+    // Antialiasing note: two adjacent cells share an edge, and when that
+    // edge falls inside a device pixel the rasterizer antialiases each
+    // rect on its own and composites them with source-over. Neither
+    // covers the pixel fully, so ~25% of the background rect below shows
+    // through and the grid lines appear as hairlines over the avatar.
+    // `crispEdges` turns antialiasing off for the cells, which snaps
+    // their edges to whole pixels and removes the seams at every size and
+    // device pixel ratio. It goes on an inner group rather than on the
+    // `<svg>`, so the rounded-corner clip path in core.ts keeps its own
+    // smooth edge.
+    `<g shape-rendering="crispEdges">${rects.join("")}</g>`,
   ].join("");
 }

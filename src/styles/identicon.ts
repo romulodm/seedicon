@@ -56,9 +56,10 @@ export function renderIdenticon(rng: Rng, size: number): string {
       if (filled && runStart < 0) {
         runStart = col;
       } else if (!filled && runStart >= 0) {
-        // Emit one rect per horizontal run rather than one per cell:
-        // fewer nodes, and no hairline seams between adjacent cells at
-        // fractional sizes.
+        // Emit one rect per horizontal run rather than one per cell,
+        // purely to keep the node count down. It is not what prevents
+        // seams — see the note on `crispEdges` at the end of this
+        // function, which is what handles the row boundaries too.
         rects.push(
           `<rect x="${runStart * cell}" y="${row * cell}" width="${(col - runStart) * cell}" height="${cell}" fill="${color}"/>`,
         );
@@ -69,6 +70,16 @@ export function renderIdenticon(rng: Rng, size: number): string {
 
   return [
     `<rect width="${size}" height="${size}" fill="${palette.background}"/>`,
-    ...rects,
+    // Antialiasing note: two adjacent cells share an edge, and when that
+    // edge falls inside a device pixel the rasterizer antialiases each
+    // rect on its own and composites them with source-over. Neither
+    // covers the pixel fully, so ~25% of the background rect below shows
+    // through and the grid lines appear as hairlines over the avatar.
+    // `crispEdges` turns antialiasing off for the cells, which snaps
+    // their edges to whole pixels and removes the seams at every size and
+    // device pixel ratio. It goes on an inner group rather than on the
+    // `<svg>`, so the rounded-corner clip path in core.ts keeps its own
+    // smooth edge.
+    `<g shape-rendering="crispEdges">${rects.join("")}</g>`,
   ].join("");
 }
