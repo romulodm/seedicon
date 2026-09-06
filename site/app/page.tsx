@@ -1,5 +1,7 @@
-import { generateAvatar } from "seedicon";
+import { Footer, Nav } from "./components/Chrome";
 import { Gallery } from "./components/Gallery";
+import { HeroIcons } from "./components/HeroIcons";
+import { InstallCommand } from "./components/InstallCommand";
 import { Playground } from "./components/Playground";
 import { formatCount, getPackageStats, LINKS } from "./lib/stats";
 
@@ -12,72 +14,43 @@ export default async function Home() {
 
   return (
     <>
-      <header className="wrap">
-        <nav className="nav">
-          <a className="nav-brand" href="/">
-            <span
-              dangerouslySetInnerHTML={{
-                __html: generateAvatar({
-                  seed: "seedicon",
-                  style: "ring",
-                  size: 26,
-                  radius: 8,
-                }),
-              }}
-            />
-            seedicon
-          </a>
-          <div className="nav-links">
-            <a href="#playground">Playground</a>
-            <a href={LINKS.npm} target="_blank" rel="noreferrer">
-              npm
-            </a>
-            <a href={LINKS.github} target="_blank" rel="noreferrer">
-              GitHub
-            </a>
-          </div>
-        </nav>
-      </header>
+      <Nav current="home" />
 
       <main className="wrap">
         <div className="hero">
-          <h1>
-            Avatars from
-            <br />
-            a string.
-          </h1>
-          <p>
-            <strong>seedicon</strong> turns any string — a UUID, a user id,
-            a wallet address — into a deterministic SVG avatar. Same seed
-            in, same avatar out, forever. Nothing is uploaded, stored,
-            resized or moderated: the only thing you keep is the id you
-            already had.
-          </p>
-          <div className="hero-row">
-            <a className="btn btn-primary" href="#playground">
-              Try it
-            </a>
-            <a
-              className="btn"
-              href={LINKS.github}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Source
-            </a>
-            <code
-              style={{
-                fontFamily: "var(--mono)",
-                fontSize: 14,
-                color: "var(--text-dim)",
-                padding: "11px 16px",
-                border: "1px solid var(--border)",
-                borderRadius: 10,
-              }}
-            >
-              npm i seedicon
-            </code>
+          <div className="hero-copy">
+            <h1>
+              Avatars from
+              <br />
+              a string.
+            </h1>
+            <p>
+              <strong>seedicon</strong> turns any string — a UUID, a user id,
+              a wallet address — into a deterministic SVG avatar. Same seed
+              in, same avatar out, forever. Nothing is uploaded, stored,
+              resized or moderated: the only thing you keep is the id you
+              already had.
+            </p>
+            <div className="hero-row">
+              <a className="btn btn-primary" href="#playground">
+                Try it
+              </a>
+              <a className="btn" href="/docs">
+                Docs
+              </a>
+              <a
+                className="btn"
+                href={LINKS.github}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Source
+              </a>
+              <InstallCommand />
+            </div>
           </div>
+
+          <HeroIcons />
         </div>
 
         <div className="stats">
@@ -134,7 +107,12 @@ export default async function Home() {
             no canvas and no <code>window</code> access, so it works
             during SSR in Next.js, Remix or anything else. Three of them
             are output-compatible with an existing library, so you can
-            swap it out without changing anyone&apos;s avatar.
+            swap it out without changing anyone&apos;s avatar. Each one is
+            described in full, with the shape and radius options, on the{" "}
+            <a href="/docs#styles" style={{ color: "var(--accent)" }}>
+              docs page
+            </a>
+            .
           </p>
           <Gallery />
         </section>
@@ -144,7 +122,12 @@ export default async function Home() {
           <p className="lede">
             Two functions and one optional React component. That is the
             whole API — plus one entry point per style, if you only use
-            one and care about bundle size.
+            one and care about bundle size. The{" "}
+            <a href="/docs" style={{ color: "var(--accent)" }}>
+              docs
+            </a>{" "}
+            cover every option, including the square, rounded and circle
+            shapes.
           </p>
           <div className="code">
             <pre>
@@ -160,12 +143,12 @@ export default async function Home() {
               {"const src = generateAvatarDataUri({ seed: user.id });\n\n"}
               <span className="cmt">{"// Or the React component\n"}</span>
               {'import { Avatar } from "seedicon/react";\n\n'}
-              {"<Avatar seed={user.id} size={40} radius={20} />\n\n"}
+              {'<Avatar seed={user.id} size={40} shape="circle" />\n\n'}
               <span className="cmt">
                 {"// Or one style alone — pulls in nothing else\n"}
               </span>
               {'import { ring } from "seedicon/ring";\n\n'}
-              {"const svg = ring({ seed: user.id, size: 40 });"}
+              {'const svg = ring({ seed: user.id, size: 40, shape: "circle" });'}
             </pre>
           </div>
         </section>
@@ -184,18 +167,7 @@ export default async function Home() {
         </section>
       </main>
 
-      <footer className="wrap">
-        <span>MIT · built by Romulo</span>
-        <span>
-          <a href={LINKS.npm} target="_blank" rel="noreferrer">
-            npm
-          </a>
-          {" · "}
-          <a href={LINKS.github} target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-        </span>
-      </footer>
+      <Footer />
     </>
   );
 }
