@@ -15,17 +15,24 @@ export interface AvatarProps extends Omit<SeediconOptions, "size"> {
  * there's no canvas or `window` involved.
  *
  * ```tsx
- * <Avatar seed={address} style="pixels" size={40} />
+ * <Avatar seed={address} style="pixels" size={40} shape="circle" />
  * ```
  *
  * Need more control over the wrapper (custom CSS, data attributes)? Call
  * {@link generateAvatar} directly and render the markup yourself — this
  * component is a thin convenience, not the only way to use seedicon.
  */
-export function Avatar({ seed, style, size = 40, radius, className }: AvatarProps) {
+export function Avatar({
+  seed,
+  style,
+  size = 40,
+  shape,
+  radius,
+  className,
+}: AvatarProps) {
   const svg = useMemo(
-    () => generateAvatar({ seed, style, size, radius }),
-    [seed, style, size, radius],
+    () => generateAvatar({ seed, style, size, shape, radius }),
+    [seed, style, size, shape, radius],
   );
 
   return (
