@@ -1,6 +1,6 @@
 <div align="center">
   <picture>
-    <img src="https://raw.githubusercontent.com/romulodm/seedicon/main/assets/seedicon-logo.png" alt="seedicon" width="120" />
+    <img src="https://seedicon.romulodm.dev/logo-512.png" alt="seedicon" width="120" />
   </picture>
 
   # seedicon
@@ -14,7 +14,7 @@
   [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/romulodm/seedicon/blob/main/LICENSE)
   [![CI](https://github.com/romulodm/seedicon/actions/workflows/ci.yml/badge.svg)](https://github.com/romulodm/seedicon/actions/workflows/ci.yml)
 
-  **<img src="https://api.iconify.design/lucide/book-open.svg?color=%237c7cff&width=16" align="absmiddle"> Full documentation and live playground: [seedicon.romulodm.dev](https://seedicon.romulodm.dev)**
+  **Full documentation and live playground: [seedicon.romulodm.dev](https://seedicon.romulodm.dev)**
 </div>
 
 <!-- TODO: imagens de exemplo dos estilos (screenshots do site) -->
