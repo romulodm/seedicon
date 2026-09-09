@@ -10,6 +10,8 @@ import {
   type SeediconStyle,
 } from "seedicon";
 
+import { BTN, CODE_BOX, CODE_PRE } from "../lib/ui";
+
 /**
  * The live playground. It imports the published package and calls it in
  * the browser — nothing here is a mock or a re-implementation, so if the
@@ -24,6 +26,14 @@ import {
 const PREVIEW_SIZES = [96, 56, 40, 24, 16];
 
 const DEFAULT_SEED = "550e8400-e29b-41d4-a716-446655440000";
+
+const LABEL = "mb-2 block text-xs font-semibold uppercase tracking-[0.08em] text-faint";
+const FIELD = "mb-[18px] last:mb-0";
+/** `truncate` matters here: the panel is 260px wide and `kaleidoscope` is
+ *  twelve characters, so without it the longest names run past the edge. */
+const OPTION =
+  "cursor-pointer truncate rounded-lg border border-border-strong bg-input px-1.5 py-2 font-mono text-xs text-dim transition-colors hover:text-foreground data-[active=true]:border-foreground data-[active=true]:bg-foreground data-[active=true]:text-background";
+const ACTIONS = "mt-3.5 flex flex-wrap gap-2";
 
 /**
  * The corner is either one of the package's three presets or a radius you
@@ -41,7 +51,7 @@ function presetRadius(shape: SeediconShape, size: number): number {
 
 export function Playground() {
   const [seed, setSeed] = useState(DEFAULT_SEED);
-  const [style, setStyle] = useState<SeediconStyle>("ring");
+  const [style, setStyle] = useState<SeediconStyle>("pixelart");
   const [size, setSize] = useState(96);
   const [corner, setCorner] = useState<CornerChoice>("rounded");
   const [customRadius, setCustomRadius] = useState(24);
@@ -98,11 +108,11 @@ export function Playground() {
   }
 
   return (
-    <div className="pg">
+    <div className="grid grid-cols-1 items-start gap-7 min-[760px]:grid-cols-[minmax(0,1fr)_260px]">
       <div>
-        <div className="preview">
+        <div className="mb-5 flex min-h-[190px] flex-wrap items-end gap-5 border-b border-border pb-6 pt-7">
           {PREVIEW_SIZES.map((previewSize) => (
-            <figure key={previewSize}>
+            <figure key={previewSize} className="text-center">
               <span
                 dangerouslySetInnerHTML={{
                   __html: generateAvatar({
@@ -120,32 +130,30 @@ export function Playground() {
                   }),
                 }}
               />
-              <figcaption>{previewSize}px</figcaption>
+              <figcaption className="mt-2 font-mono text-[10px] leading-none text-faint">
+                {previewSize}px
+              </figcaption>
             </figure>
           ))}
         </div>
 
-        <div className="code">
+        <div className={CODE_BOX}>
           <button
-            className="copy"
-            onClick={() => copy("snippet", snippet)}
             type="button"
+            onClick={() => copy("snippet", snippet)}
+            className="absolute right-2.5 top-2.5 cursor-pointer rounded-md border border-border-strong bg-raised px-2.5 py-[5px] font-mono text-[11px] text-dim transition-colors hover:border-primary hover:text-foreground"
           >
             {copied === "snippet" ? "copied" : "copy"}
           </button>
-          <pre>{snippet}</pre>
+          <pre className={CODE_PRE}>{snippet}</pre>
         </div>
 
-        <div className="actions">
-          <button
-            className="btn"
-            type="button"
-            onClick={() => copy("svg", svg)}
-          >
+        <div className={ACTIONS}>
+          <button className={BTN} type="button" onClick={() => copy("svg", svg)}>
             {copied === "svg" ? "Copied SVG" : "Copy SVG"}
           </button>
           <button
-            className="btn"
+            className={BTN}
             type="button"
             onClick={() =>
               copy(
@@ -164,9 +172,11 @@ export function Playground() {
         </div>
       </div>
 
-      <div className="panel">
-        <div className="field">
-          <label htmlFor="seed">Seed</label>
+      <div className="rounded-xl border border-border bg-raised p-[22px]">
+        <div className={FIELD}>
+          <label className={LABEL} htmlFor="seed">
+            Seed
+          </label>
           <input
             id="seed"
             type="text"
@@ -174,10 +184,11 @@ export function Playground() {
             spellCheck={false}
             onChange={(event) => setSeed(event.target.value)}
             placeholder="any string"
+            className="w-full rounded-lg border border-border-strong bg-input px-3 py-[11px] font-mono text-[13px] text-foreground focus:border-primary focus:outline-none"
           />
-          <div className="actions">
+          <div className={ACTIONS}>
             <button
-              className="btn"
+              className={BTN}
               type="button"
               onClick={() => setSeed(crypto.randomUUID())}
             >
@@ -186,14 +197,14 @@ export function Playground() {
           </div>
         </div>
 
-        <div className="field">
-          <label>Style</label>
-          <div className="styles">
+        <div className={FIELD}>
+          <span className={LABEL}>Style</span>
+          <div className="grid grid-cols-2 gap-1.5">
             {SEEDICON_STYLES.map((option) => (
               <button
                 key={option}
                 type="button"
-                className="style-btn"
+                className={OPTION}
                 data-active={option === style}
                 onClick={() => setStyle(option)}
               >
@@ -203,14 +214,14 @@ export function Playground() {
           </div>
         </div>
 
-        <div className="field">
-          <label>Shape</label>
-          <div className="shapes">
+        <div className={FIELD}>
+          <span className={LABEL}>Shape</span>
+          <div className="grid grid-cols-2 gap-1.5">
             {[...SEEDICON_SHAPES, "custom" as const].map((option) => (
               <button
                 key={option}
                 type="button"
-                className="style-btn"
+                className={OPTION}
                 data-active={option === corner}
                 onClick={() => {
                   // Switching to custom starts from whatever the current
@@ -225,9 +236,12 @@ export function Playground() {
           </div>
         </div>
 
-        <div className="field">
-          <label htmlFor="size">
-            Size <span className="val">{size}px</span>
+        <div className={FIELD}>
+          <label className={LABEL} htmlFor="size">
+            Size
+            <span className="float-right font-mono normal-case tracking-normal text-dim">
+              {size}px
+            </span>
           </label>
           <input
             id="size"
@@ -241,12 +255,16 @@ export function Playground() {
               setSize(next);
               setCustomRadius((current) => Math.min(current, next / 2));
             }}
+            className="w-full accent-primary"
           />
         </div>
 
-        <div className="field">
-          <label htmlFor="radius">
-            Radius <span className="val">{Math.round(radius)}px</span>
+        <div className={FIELD}>
+          <label className={LABEL} htmlFor="radius">
+            Radius
+            <span className="float-right font-mono normal-case tracking-normal text-dim">
+              {Math.round(radius)}px
+            </span>
           </label>
           <input
             id="radius"
@@ -262,6 +280,7 @@ export function Playground() {
               setCustomRadius(Number(event.target.value));
               setCorner("custom");
             }}
+            className="w-full accent-primary"
           />
         </div>
       </div>

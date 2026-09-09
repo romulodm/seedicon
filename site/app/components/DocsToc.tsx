@@ -70,11 +70,18 @@ export function DocsToc({ items }: { items: TocItem[] }) {
   }, [items]);
 
   return (
-    <nav>
+    <nav className="flex flex-col gap-0.5 max-[860px]:flex-row max-[860px]:flex-wrap max-[860px]:gap-1">
       {items.map((item) => (
         <a
           key={item.id}
           href={`#${item.id}`}
+          className="
+            rounded-[7px] px-2.5 py-[5px] text-[13px] text-faint transition-colors
+            hover:bg-raised hover:text-foreground
+            data-[active=true]:bg-raised data-[active=true]:text-primary
+            max-[860px]:border max-[860px]:border-border
+            max-[860px]:data-[active=true]:border-primary
+          "
           data-active={item.id === active}
           aria-current={item.id === active ? "location" : undefined}
         >

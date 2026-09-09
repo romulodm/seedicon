@@ -19,14 +19,20 @@ const SEEDS = [
 
 export function Gallery() {
   return (
-    <div className="gallery">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-x-5 gap-y-6">
       {SEEDICON_STYLES.map((style) => (
-        <div className="gallery-col" key={style}>
-          <h3>
-            <a href="/docs#styles">{style}</a>
+        <div key={style}>
+          <h3 className="mb-1 font-mono text-[13px] font-semibold">
+            <a href="/docs#styles" className="transition-colors hover:text-primary">
+              {style}
+            </a>
           </h3>
-          <p>{STYLE_DOC_BY_NAME[style].tagline}</p>
-          <div className="gallery-row">
+          {/* A fixed minimum keeps the avatar rows aligned across columns
+              whether a tagline wraps to one line or to three. */}
+          <p className="mb-3.5 min-h-9 text-xs leading-normal text-faint">
+            {STYLE_DOC_BY_NAME[style].tagline}
+          </p>
+          <div className="flex flex-wrap gap-2">
             {SEEDS.map((seed) => (
               <span
                 key={seed}
