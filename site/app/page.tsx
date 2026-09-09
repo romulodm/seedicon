@@ -1,170 +1,168 @@
-import { Footer, Nav } from "./components/Chrome";
-import { Gallery } from "./components/Gallery";
-import { HeroIcons } from "./components/HeroIcons";
-import { InstallCommand } from "./components/InstallCommand";
-import { Playground } from "./components/Playground";
+import type { ReactNode } from "react";
+import { SEEDICON_STYLES } from "seedicon";
+
+import Footer from "@/components/Footer";
+import Hero from "@/components/Hero";
+import Navbar from "@/components/Navbar";
+import { FAQ } from "@/components/FAQ";
+import { Gallery } from "@/components/Gallery";
+import { Playground } from "@/components/Playground";
 import { formatCount, getPackageStats, LINKS } from "./lib/stats";
+import { CODE_BOX, CODE_PRE, CONTAINER } from "./lib/ui";
 
 // Re-render the page (and refetch the stats) at most once an hour. Between
 // revalidations every visitor is served static HTML from the edge cache.
 export const revalidate = 3600;
+
+const LEDE = "mb-7 max-w-[620px] text-[17px] leading-relaxed text-dim";
+const LINK = "text-primary hover:underline";
+
+/** The landing page's section shell: a hairline, a small uppercase eyebrow
+ *  instead of a heading, and the content under it. */
+function Section({
+  id,
+  title,
+  children,
+}: {
+  id?: string;
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <section id={id} className="scroll-mt-24 py-10">
+      <h2 className="mb-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-faint">
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
+}
+
+/** One cell of the stats strip. The strip is a 1px-gap grid over a border
+ *  colour, so the gaps themselves draw the dividing lines. */
+function Stat({
+  value,
+  label,
+  href,
+}: {
+  value: string;
+  label: string;
+  href?: string;
+}) {
+  const inner = (
+    <>
+      <div className="font-mono text-2xl font-semibold tracking-[-0.02em]">
+        {value}
+      </div>
+      <div className="mt-1.5 text-xs uppercase tracking-[0.08em] text-faint">
+        {label}
+      </div>
+    </>
+  );
+
+  if (!href) return <div className="bg-raised p-5">{inner}</div>;
+
+  return (
+    <a
+      className="bg-raised p-5 transition-colors hover:bg-input"
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {inner}
+    </a>
+  );
+}
 
 export default async function Home() {
   const stats = await getPackageStats();
 
   return (
     <>
-      <Nav current="home" />
+      <Navbar />
+      <Hero />
 
-      <main className="wrap">
-        <div className="hero">
-          <div className="hero-copy">
-            <h1>
-              Avatars from
-              <br />
-              a string.
-            </h1>
-            <p>
-              <strong>seedicon</strong> turns any string — a UUID, a user id,
-              a wallet address — into a deterministic SVG avatar. Same seed
-              in, same avatar out, forever. Nothing is uploaded, stored,
-              resized or moderated: the only thing you keep is the id you
-              already had.
-            </p>
-            <div className="hero-row">
-              <a className="btn btn-primary" href="#playground">
-                Try it
-              </a>
-              <a className="btn" href="/docs">
-                Docs
-              </a>
-              <a
-                className="btn"
-                href={LINKS.github}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Source
-              </a>
-              <InstallCommand />
-            </div>
-          </div>
-
-          <HeroIcons />
-        </div>
-
-        <div className="stats">
-          <a
-            className="stat"
+      <main className={CONTAINER}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-px overflow-hidden rounded-xl border border-border bg-border">
+          <Stat
+            value={formatCount(stats.weeklyDownloads)}
+            label="Downloads / week"
             href={LINKS.npm}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <div className="stat-value">
-              {formatCount(stats.weeklyDownloads)}
-            </div>
-            <div className="stat-label">Downloads / week</div>
-          </a>
-          <a
-            className="stat"
+          />
+          <Stat
+            value={formatCount(stats.stars)}
+            label="GitHub stars"
             href={LINKS.github}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <div className="stat-value">{formatCount(stats.stars)}</div>
-            <div className="stat-label">GitHub stars</div>
-          </a>
-          <a
-            className="stat"
+          />
+          <Stat
+            value={stats.version ? `v${stats.version}` : "—"}
+            label="Latest version"
             href={LINKS.npm}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <div className="stat-value">
-              {stats.version ? `v${stats.version}` : "—"}
-            </div>
-            <div className="stat-label">Latest version</div>
-          </a>
-          <div className="stat">
-            <div className="stat-value">0</div>
-            <div className="stat-label">Dependencies</div>
-          </div>
+          />
+          <Stat value="0" label="Dependencies" />
         </div>
 
-        <section id="playground">
-          <h2>Playground</h2>
-          <p className="lede">
+        <Section id="playground" title="Playground">
+          <p className={LEDE}>
             This runs the real package in your browser. Type a seed, pick a
             style, copy the code.
           </p>
           <Playground />
-        </section>
+        </Section>
 
-        <section>
-          <h2>Styles</h2>
-          <p className="lede">
-            Nine styles, all rendered on the server here — seedicon has
-            no canvas and no <code>window</code> access, so it works
-            during SSR in Next.js, Remix or anything else. Three of them
-            are output-compatible with an existing library, so you can
-            swap it out without changing anyone&apos;s avatar. Each one is
+        <Section title="Styles">
+          <p className={LEDE}>
+            {SEEDICON_STYLES.length} styles, all rendered on the server here —
+            seedicon has no canvas and no <code className="font-mono">window</code>{" "}
+            access, so it works during SSR in Next.js, Remix or anything else.
+            Three of them are output-compatible with an existing library, so you
+            can swap it out without changing anyone&apos;s avatar. Each one is
             described in full, with the shape and radius options, on the{" "}
-            <a href="/docs#styles" style={{ color: "var(--accent)" }}>
+            <a href="/docs#styles" className={LINK}>
               docs page
             </a>
             .
           </p>
           <Gallery />
-        </section>
+        </Section>
 
-        <section>
-          <h2>Usage</h2>
-          <p className="lede">
-            Two functions and one optional React component. That is the
-            whole API — plus one entry point per style, if you only use
-            one and care about bundle size. The{" "}
-            <a href="/docs" style={{ color: "var(--accent)" }}>
+        <Section title="Usage">
+          <p className={LEDE}>
+            Two functions and one optional React component. That is the whole
+            API — plus one entry point per style, if you only use one and care
+            about bundle size. The{" "}
+            <a href="/docs" className={LINK}>
               docs
             </a>{" "}
-            cover every option, including the square, rounded and circle
-            shapes.
+            cover every option, including the square, rounded and circle shapes.
           </p>
-          <div className="code">
-            <pre>
-              <span className="cmt">
+          <div className={CODE_BOX}>
+            <pre className={CODE_PRE}>
+              <span className="text-faint">
                 {"// Anywhere: returns raw <svg> markup as a string\n"}
               </span>
               {'import { generateAvatar } from "seedicon";\n\n'}
-              {'const svg = generateAvatar({ seed: user.id, style: "ring" });\n\n'}
-              <span className="cmt">
+              {'const svg = generateAvatar({ seed: user.id, style: "quilt" });\n\n'}
+              <span className="text-faint">
                 {"// Or a data URI, ready for <img src> or CSS\n"}
               </span>
               {'import { generateAvatarDataUri } from "seedicon";\n\n'}
               {"const src = generateAvatarDataUri({ seed: user.id });\n\n"}
-              <span className="cmt">{"// Or the React component\n"}</span>
+              <span className="text-faint">{"// Or the React component\n"}</span>
               {'import { Avatar } from "seedicon/react";\n\n'}
               {'<Avatar seed={user.id} size={40} shape="circle" />\n\n'}
-              <span className="cmt">
+              <span className="text-faint">
                 {"// Or one style alone — pulls in nothing else\n"}
               </span>
-              {'import { ring } from "seedicon/ring";\n\n'}
-              {'const svg = ring({ seed: user.id, size: 40, shape: "circle" });'}
+              {'import { quilt } from "seedicon/quilt";\n\n'}
+              {'const svg = quilt({ seed: user.id, size: 40, shape: "circle" });'}
             </pre>
           </div>
-        </section>
+        </Section>
 
-        <section>
-          <h2>Why</h2>
-          <p className="lede">
-            Letting users upload a profile picture means storing it,
-            resizing it, moderating it and serving it. Most products do not
-            need any of that — they need something consistent in the avatar
-            slot that does not look like a broken image. seedicon is that
-            something, derived from an id you already have, with no
-            randomness and no I/O: the same options always produce
-            byte-for-byte identical markup, on every platform.
-          </p>
-        </section>
+        <Section id="faq" title="FAQ">
+          <FAQ />
+        </Section>
       </main>
 
       <Footer />

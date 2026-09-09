@@ -20,8 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
+    // Anchor clicks glide instead of jumping, so it stays obvious that the
+    // docs sidebar entry lighting up belongs to where you just landed.
+    <html lang="en" className="motion-safe:scroll-smooth">
+      <body className="bg-background font-sans text-foreground antialiased">
         {children}
         <Analytics />
       </body>
