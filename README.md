@@ -183,3 +183,4 @@ dithering.
 Free for commercial use, modification and redistribution — the one condition is
 that the copyright notice travels with the code. The three ported styles keep
 the licenses of their originals, listed under [Credits](#credits).
+
