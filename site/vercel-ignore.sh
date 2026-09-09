@@ -3,7 +3,7 @@
 # ---- PAUSE ----
 # While this line is active, no push will trigger a build.
 # Comment it out to re-enable the path-based filter below.
-exit 0
+exit 1
 
 # ---- PATH FILTER ----
 # Build only when site/, src/, or the configuration files change.
