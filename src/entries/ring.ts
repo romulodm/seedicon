@@ -6,17 +6,12 @@ import { renderRing } from "../styles/ring.js";
  *
  * Concentric rings in seed-derived colors and thicknesses.
  *
- * Import this instead of the package root when you only use one style —
- * it pulls in this renderer and the shared core, and none of the other
- * eight. The root entry (`seedicon`) resolves styles by name, which
- * means it has to reference all of them and no bundler can drop the ones
- * you never call.
- *
- * ```ts
- * import { ring } from "seedicon/ring";
- *
- * const svg = ring({ seed: user.id, size: 40, shape: "circle" });
- * ```
+ * @deprecated No longer supported. It is kept so that code written against
+ * an earlier version keeps resolving and keeps rendering the same avatars —
+ * nothing here has changed and nothing will. It is not listed in
+ * `SEEDICON_STYLES`, not shown in the docs, and not part of what this
+ * package is tested or maintained for. Pick another style for new code;
+ * `braid` is the closest replacement in spirit.
  */
 export function ring(options: StyleOptions): string {
   return renderAvatar(renderRing, "ring", options);
