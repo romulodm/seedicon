@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import { describe, expect, it } from "vitest";
 import {
   generateAvatar,
@@ -121,5 +123,60 @@ describe("generateAvatarDataUri", () => {
     expect(decodeURIComponent(uri.replace("data:image/svg+xml,", ""))).toBe(
       svg,
     );
+  });
+});
+
+describe("the style registry", () => {
+  it("lists every style exactly once", () => {
+    expect(new Set(SEEDICON_STYLES).size).toBe(SEEDICON_STYLES.length);
+  });
+
+  it("ships a package export for every listed style", () => {
+    // The failure this catches is registering a style in index.ts and
+    // forgetting tsup.config.ts or the `exports` map: `generateAvatar`
+    // keeps working, `import { x } from "seedicon/x"` does not resolve for
+    // anyone installing the package, and nothing else here notices.
+    const pkg = JSON.parse(
+      readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+    ) as { exports: Record<string, unknown> };
+
+    for (const style of SEEDICON_STYLES) {
+      expect(pkg.exports).toHaveProperty(`./${style}`);
+    }
+  });
+
+  it("gives every style its own svg ids", () => {
+    // SVG ids share one namespace across the whole document, so two avatars
+    // on a page that resolved to the same id would both use whichever
+    // definition came first. It only shows up once a page renders more than
+    // one avatar, which no single-avatar assertion can see.
+    const ids = (svg: string) =>
+      [...svg.matchAll(/id="([^"]+)"/g)].map((match) => match[1] as string);
+
+    for (const style of SEEDICON_STYLES) {
+      const small = ids(generateAvatar({ seed: "check", style, size: 32, radius: 6 }));
+      const large = ids(generateAvatar({ seed: "check", style, size: 96, radius: 6 }));
+      const other = ids(generateAvatar({ seed: "other", style, size: 32, radius: 6 }));
+
+      for (const id of small) {
+        expect(large, `${style} reuses an id across sizes`).not.toContain(id);
+        expect(other, `${style} reuses an id across seeds`).not.toContain(id);
+      }
+    }
+  });
+});
+
+describe("deprecated styles", () => {
+  it("keeps rendering, so existing callers do not break", () => {
+    const svg = generateAvatar({ seed: "romulo", style: "ring", size: 64 });
+    expect(svg.startsWith("<svg")).toBe(true);
+    expect(svg).toBe(generateAvatar({ seed: "romulo", style: "ring", size: 64 }));
+  });
+
+  it("stays out of the list everything else is built from", () => {
+    // The site gallery, the playground, the docs and the tests above all
+    // iterate SEEDICON_STYLES. Keeping `ring` out of it is what retires the
+    // style everywhere without breaking a single import.
+    expect(SEEDICON_STYLES).not.toContain("ring" as never);
   });
 });
