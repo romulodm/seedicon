@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/romulodm/seedicon.git"
   },
-  "homepage": "https://github.com/romulodm/seedicon#readme",
+  "homepage": "https://seedicon.romulodm.dev/",
   "bugs": {
     "url": "https://github.com/romulodm/seedicon/issues"
   },
@@ -76,14 +76,14 @@
         "default": "./dist/stellar.cjs"
       }
     },
-    "./ring": {
+    "./randomart": {
       "import": {
-        "types": "./dist/ring.d.ts",
-        "default": "./dist/ring.js"
+        "types": "./dist/randomart.d.ts",
+        "default": "./dist/randomart.js"
       },
       "require": {
-        "types": "./dist/ring.d.cts",
-        "default": "./dist/ring.cjs"
+        "types": "./dist/randomart.d.cts",
+        "default": "./dist/randomart.cjs"
       }
     },
     "./lifehash": {
@@ -94,6 +94,86 @@
       "require": {
         "types": "./dist/lifehash.d.cts",
         "default": "./dist/lifehash.cjs"
+      }
+    },
+    "./dither": {
+      "import": {
+        "types": "./dist/dither.d.ts",
+        "default": "./dist/dither.js"
+      },
+      "require": {
+        "types": "./dist/dither.d.cts",
+        "default": "./dist/dither.cjs"
+      }
+    },
+    "./pixelart": {
+      "import": {
+        "types": "./dist/pixelart.d.ts",
+        "default": "./dist/pixelart.js"
+      },
+      "require": {
+        "types": "./dist/pixelart.d.cts",
+        "default": "./dist/pixelart.cjs"
+      }
+    },
+    "./truchet": {
+      "import": {
+        "types": "./dist/truchet.d.ts",
+        "default": "./dist/truchet.js"
+      },
+      "require": {
+        "types": "./dist/truchet.d.cts",
+        "default": "./dist/truchet.cjs"
+      }
+    },
+    "./heraldry": {
+      "import": {
+        "types": "./dist/heraldry.d.ts",
+        "default": "./dist/heraldry.js"
+      },
+      "require": {
+        "types": "./dist/heraldry.d.cts",
+        "default": "./dist/heraldry.cjs"
+      }
+    },
+    "./kaleidoscope": {
+      "import": {
+        "types": "./dist/kaleidoscope.d.ts",
+        "default": "./dist/kaleidoscope.js"
+      },
+      "require": {
+        "types": "./dist/kaleidoscope.d.cts",
+        "default": "./dist/kaleidoscope.cjs"
+      }
+    },
+    "./streamlines": {
+      "import": {
+        "types": "./dist/streamlines.d.ts",
+        "default": "./dist/streamlines.js"
+      },
+      "require": {
+        "types": "./dist/streamlines.d.cts",
+        "default": "./dist/streamlines.cjs"
+      }
+    },
+    "./moire": {
+      "import": {
+        "types": "./dist/moire.d.ts",
+        "default": "./dist/moire.js"
+      },
+      "require": {
+        "types": "./dist/moire.d.cts",
+        "default": "./dist/moire.cjs"
+      }
+    },
+    "./terrain": {
+      "import": {
+        "types": "./dist/terrain.d.ts",
+        "default": "./dist/terrain.js"
+      },
+      "require": {
+        "types": "./dist/terrain.d.cts",
+        "default": "./dist/terrain.cjs"
       }
     },
     "./marble": {
@@ -126,6 +206,16 @@
         "default": "./dist/gradient.cjs"
       }
     },
+    "./ring": {
+      "import": {
+        "types": "./dist/ring.d.ts",
+        "default": "./dist/ring.js"
+      },
+      "require": {
+        "types": "./dist/ring.d.cts",
+        "default": "./dist/ring.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -155,7 +245,10 @@
     "stellar",
     "generative",
     "ssr",
-    "zero-dependency"
+    "zero-dependency",
+    "pixel-art",
+    "dicebear",
+    "randomart"
   ],
   "license": "MIT",
   "peerDependencies": {
