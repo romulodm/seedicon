@@ -8,7 +8,7 @@ import { hashString, rngFromSeed, type Rng } from "./hash.js";
  * is what makes `seedicon/<style>` entry points possible: importing one
  * style pulls in this file and that style's renderer, and nothing else.
  * The moment a registry of all styles lived here, every import would
- * drag in all nine.
+ * drag in all of them.
  */
 
 /**

@@ -6,25 +6,54 @@ import {
   type StyleRenderer,
 } from "./core.js";
 import { renderPixels } from "./styles/pixels.js";
-import { renderRing } from "./styles/ring.js";
-import { renderMarble } from "./styles/marble.js";
-import { renderGradient } from "./styles/gradient.js";
 import { renderIdenticon } from "./styles/identicon.js";
 import { renderJdenticon } from "./styles/jdenticon.js";
-import { renderLifehash } from "./styles/lifehash.js";
 import { renderStellar } from "./styles/stellar.js";
+import { renderRandomart } from "./styles/randomart.js";
+import { renderLifehash } from "./styles/lifehash.js";
+import { renderDither } from "./styles/dither.js";
+import { renderPixelart } from "./styles/pixelart.js";
+import { renderTruchet } from "./styles/truchet.js";
+import { renderHeraldry } from "./styles/heraldry.js";
+import { renderKaleidoscope } from "./styles/kaleidoscope.js";
+import { renderStreamlines } from "./styles/streamlines.js";
+import { renderMoire } from "./styles/moire.js";
+import { renderTerrain } from "./styles/terrain.js";
+import { renderMarble } from "./styles/marble.js";
 import { renderWaves } from "./styles/waves.js";
+import { renderGradient } from "./styles/gradient.js";
+import { renderRing } from "./styles/ring.js";
 
+/** Every style this package documents, tests and maintains. */
 export type SeediconStyle =
   | "pixels"
   | "identicon"
   | "jdenticon"
   | "stellar"
-  | "ring"
+  | "randomart"
   | "lifehash"
+  | "dither"
+  | "pixelart"
+  | "truchet"
+  | "heraldry"
+  | "kaleidoscope"
+  | "streamlines"
+  | "moire"
+  | "terrain"
   | "marble"
   | "waves"
   | "gradient";
+
+/**
+ * Styles that still resolve but are no longer supported.
+ *
+ * @deprecated `ring` is kept only so that code written against an earlier
+ * version keeps working: it renders exactly what it always did and it always
+ * will. It is not in {@link SEEDICON_STYLES}, not in the docs, and not part
+ * of what this package is maintained for. `braid` is the closest
+ * replacement.
+ */
+export type SeediconLegacyStyle = "ring";
 
 export interface SeediconOptions extends StyleOptions {
   /**
@@ -32,19 +61,28 @@ export interface SeediconOptions extends StyleOptions {
    * the `blockies` library — the same seed gives the same image, so you
    * can migrate an app off blockies without changing anyone's avatar.
    */
-  style?: SeediconStyle;
+  style?: SeediconStyle | SeediconLegacyStyle;
 }
 
-const RENDERERS: Record<SeediconStyle, StyleRenderer> = {
+const RENDERERS: Record<SeediconStyle | SeediconLegacyStyle, StyleRenderer> = {
   pixels: renderPixels,
   identicon: renderIdenticon,
   jdenticon: renderJdenticon,
   stellar: renderStellar,
-  ring: renderRing,
+  randomart: renderRandomart,
   lifehash: renderLifehash,
+  dither: renderDither,
+  pixelart: renderPixelart,
+  truchet: renderTruchet,
+  heraldry: renderHeraldry,
+  kaleidoscope: renderKaleidoscope,
+  streamlines: renderStreamlines,
+  moire: renderMoire,
+  terrain: renderTerrain,
   marble: renderMarble,
   waves: renderWaves,
   gradient: renderGradient,
+  ring: renderRing,
 };
 
 /**
@@ -62,8 +100,10 @@ export function generateAvatar(options: SeediconOptions): string {
 
   const render = RENDERERS[style];
   if (!render) {
+    // Only the supported styles are listed. A caller who lands here with a
+    // typo should be pointed at what to use, not at what is on its way out.
     throw new Error(
-      `seedicon: unknown style "${style}". Expected one of: ${Object.keys(RENDERERS).join(", ")}`,
+      `seedicon: unknown style "${style}". Expected one of: ${SEEDICON_STYLES.join(", ")}`,
     );
   }
 
@@ -86,13 +126,30 @@ export const SEEDICON_SHAPES: readonly SeediconShape[] = [
   "circle",
 ];
 
+/**
+ * Every supported style, in the order the docs and the gallery show them:
+ * bit grids first, then the sprite style, then the geometric ones, then
+ * line work, then the soft ones.
+ *
+ * Deprecated styles are deliberately absent. Anything that builds a style
+ * picker, a gallery or a test matrix from this list gets the supported set
+ * and nothing else.
+ */
 export const SEEDICON_STYLES: readonly SeediconStyle[] = [
   "pixels",
   "identicon",
   "jdenticon",
   "stellar",
-  "ring",
+  "randomart",
   "lifehash",
+  "dither",
+  "pixelart",
+  "truchet",
+  "heraldry",
+  "kaleidoscope",
+  "streamlines",
+  "moire",
+  "terrain",
   "marble",
   "waves",
   "gradient",
