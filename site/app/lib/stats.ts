@@ -71,4 +71,5 @@ export function formatCount(value: number | null): string {
 export const LINKS = {
   npm: `https://www.npmjs.com/package/${PACKAGE_NAME}`,
   github: `https://github.com/${GITHUB_REPO}`,
+  license: `https://github.com/${GITHUB_REPO}/blob/main/LICENSE`,
 } as const;
