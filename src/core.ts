@@ -113,9 +113,19 @@ export function renderAvatar(
 
   const clipId = `seedicon-radius-${hashString(`${seed}|${styleName}|${size}|${corner}`).toString(36)}`;
 
+  // `opacity=".999"` is not cosmetic. It turns the group into a
+  // transparency group, which forces the renderer to composite the
+  // style's layers into one offscreen buffer *before* the rounded corner
+  // is cut out of it. Without it browsers clip each child separately, so
+  // every partially covered pixel along the curve ends up as a stack of
+  // semi-transparent edges and whatever sits at the bottom of the stack
+  // shows through: in `terrain` that is the near-white sky rect, in
+  // `waves` the lightest band, and the corner reads as a pale halo. The
+  // remaining 0.1% of transparency is smaller than one step of 8-bit
+  // alpha, so it changes nothing that can be seen.
   const clip =
     corner > 0
-      ? `<defs><clipPath id="${clipId}"><rect width="${size}" height="${size}" rx="${corner}"/></clipPath></defs><g clip-path="url(#${clipId})">${body}</g>`
+      ? `<defs><clipPath id="${clipId}"><rect width="${size}" height="${size}" rx="${corner}"/></clipPath></defs><g clip-path="url(#${clipId})" opacity=".999">${body}</g>`
       : body;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="Avatar">${clip}</svg>`;

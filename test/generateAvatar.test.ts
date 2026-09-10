@@ -60,6 +60,15 @@ describe("generateAvatar", () => {
         expect(svg).toContain("seedicon-radius");
       });
 
+      // Do not "clean up" this attribute: it makes the clipped group a
+      // transparency group, so the layers are flattened before the corner
+      // is cut. Without it each layer is clipped on its own and the
+      // stacked antialiased edges leak the bottom layer as a pale halo.
+      it("flattens the clipped group so the corners do not fringe", () => {
+        const svg = generateAvatar({ seed: "check", style, radius: 8 });
+        expect(svg).toContain('opacity=".999"');
+      });
+
       it("resolves each shape preset to its radius", () => {
         const square = generateAvatar({ seed: "check", style, size: 100 });
         expect(square).toBe(
