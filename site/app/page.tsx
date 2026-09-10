@@ -4,11 +4,12 @@ import { SEEDICON_STYLES } from "seedicon";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
+import { AvatarShowcase } from "@/components/AvatarShowcase";
 import { FAQ } from "@/components/FAQ";
 import { Gallery } from "@/components/Gallery";
-import { Playground } from "@/components/Playground";
+import { UsageTabs } from "@/components/UsageTabs";
 import { formatCount, getPackageStats, LINKS } from "./lib/stats";
-import { CODE_BOX, CODE_PRE, CONTAINER } from "./lib/ui";
+import { CONTAINER } from "./lib/ui";
 
 // Re-render the page (and refetch the stats) at most once an hour. Between
 // revalidations every visitor is served static HTML from the edge cache.
@@ -22,17 +23,23 @@ const LINK = "text-primary hover:underline";
 function Section({
   id,
   title,
+  action,
   children,
 }: {
   id?: string;
   title: string;
+  /** Optional link, shown opposite the eyebrow on the same baseline. */
+  action?: ReactNode;
   children: ReactNode;
 }) {
   return (
     <section id={id} className="scroll-mt-24 py-10">
-      <h2 className="mb-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-faint">
-        {title}
-      </h2>
+      <div className="mb-2 flex items-baseline justify-between gap-4">
+        <h2 className="text-[13px] font-semibold uppercase tracking-[0.12em] text-faint">
+          {title}
+        </h2>
+        {action}
+      </div>
       {children}
     </section>
   );
@@ -102,12 +109,21 @@ export default async function Home() {
           <Stat value="0" label="Dependencies" />
         </div>
 
-        <Section id="playground" title="Playground">
+        <Section
+          id="preview"
+          title="Preview"
+        >
           <p className={LEDE}>
-            This runs the real package in your browser. Type a seed, pick a
-            style, copy the code.
+            One wallet address, two styles: a drawn character and a walk across
+            a board. Both are rendered on the server, so everything below is
+            markup rather than a canvas. To change the seed, style, size or
+            corner radius and watch it redraw, use the{" "}
+            <a href="/playground" className={LINK}>
+              playground
+            </a>
+            .
           </p>
-          <Playground />
+          <AvatarShowcase />
         </Section>
 
         <Section title="Styles">
@@ -129,35 +145,13 @@ export default async function Home() {
         <Section title="Usage">
           <p className={LEDE}>
             Two functions and one optional React component. That is the whole
-            API — plus one entry point per style, if you only use one and care
-            about bundle size. The{" "}
+            API — pick the one that matches where you render. The{" "}
             <a href="/docs" className={LINK}>
               docs
             </a>{" "}
             cover every option, including the square, rounded and circle shapes.
           </p>
-          <div className={CODE_BOX}>
-            <pre className={CODE_PRE}>
-              <span className="text-faint">
-                {"// Anywhere: returns raw <svg> markup as a string\n"}
-              </span>
-              {'import { generateAvatar } from "seedicon";\n\n'}
-              {'const svg = generateAvatar({ seed: user.id, style: "quilt" });\n\n'}
-              <span className="text-faint">
-                {"// Or a data URI, ready for <img src> or CSS\n"}
-              </span>
-              {'import { generateAvatarDataUri } from "seedicon";\n\n'}
-              {"const src = generateAvatarDataUri({ seed: user.id });\n\n"}
-              <span className="text-faint">{"// Or the React component\n"}</span>
-              {'import { Avatar } from "seedicon/react";\n\n'}
-              {'<Avatar seed={user.id} size={40} shape="circle" />\n\n'}
-              <span className="text-faint">
-                {"// Or one style alone — pulls in nothing else\n"}
-              </span>
-              {'import { quilt } from "seedicon/quilt";\n\n'}
-              {'const svg = quilt({ seed: user.id, size: 40, shape: "circle" });'}
-            </pre>
-          </div>
+          <UsageTabs />
         </Section>
 
         <Section id="faq" title="FAQ">

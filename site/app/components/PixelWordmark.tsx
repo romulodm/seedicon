@@ -102,7 +102,7 @@ function buildField(width: number): { field: Field; height: number } | null {
         // Not in every engine yet, hence the guard — and it has to be set
         // before measuring, since it changes the advance width.
         if ("letterSpacing" in ctx) {
-            ;(ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing =
+            ; (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing =
                 `${-size * 0.04}px`
         }
         return ctx.measureText(TEXT)
