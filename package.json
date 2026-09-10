@@ -1,6 +1,6 @@
 {
   "name": "seedicon",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Deterministic SVG avatars generated from any string seed (wallet address, UUID, user id) — no image storage, no uploads.",
   "author": "Romulo de Moraes (https://github.com/romulodm)",
   "repository": {
