@@ -32,9 +32,9 @@ export default function Hero() {
                 </p>
 
                 <div className="mt-5 flex flex-wrap items-center gap-3">
-                    <a className={BTN_PRIMARY} href="#playground">
+                    <Link className={BTN_PRIMARY} href="/playground">
                         Try it
-                    </a>
+                    </Link>
                     <a className={BTN} href={LINKS.github} target="_blank" rel="noreferrer">
                         Source
                     </a>
