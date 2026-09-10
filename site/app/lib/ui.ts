@@ -9,7 +9,7 @@
  */
 
 /** The page container: 960px, centred, with the gutter the site has always had. */
-export const CONTAINER = "mx-auto w-full max-w-page px-6";
+export const CONTAINER = "mx-auto w-full max-w-page px-4 md:px-6";
 
 /** Secondary button — a raised surface that picks up the accent on hover. */
 export const BTN =

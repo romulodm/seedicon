@@ -14,7 +14,7 @@ export default function Hero() {
     return (
         <section
             className={`
-                ${CONTAINER} grid grid-cols-1 items-center gap-12 pb-12 pt-24
+                ${CONTAINER} grid grid-cols-1 items-center gap-12 pb-12 pt-26 md:pt-24
                 min-[880px]:grid-cols-[minmax(0,1fr)_auto]
             `}
         >
