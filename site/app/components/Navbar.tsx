@@ -68,7 +68,7 @@ export default function Navbar() {
     return (
         <header
             className={`
-                fixed inset-x-0 top-0 z-50 bg-background/85
+                fixed inset-x-0 top-0 z-50 bg-background/90
                 backdrop-blur transition-transform duration-300 ease-out
                 ${direction === "down" ? "-translate-y-full" : "translate-y-0"}
             `}
