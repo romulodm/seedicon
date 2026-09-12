@@ -22,16 +22,21 @@
 
   /* Dark, with no light variant on purpose: this is a developer tool page and
      the avatars supply every colour it needs. */
-  --color-background: #0b0b0f;
-  --color-raised: #131318;        /* panels, cards, buttons */
-  --color-input: #1a1a21;         /* inputs, code blocks, hover states */
+  --color-background: #0A0A0A;
+  --color-raised: #131318;
+  /* panels, cards, buttons */
+  --color-input: #1a1a21;
+  /* inputs, code blocks, hover states */
   --color-border: #26262f;
   --color-border-strong: #383844;
   --color-foreground: #ececf1;
-  --color-dim: #9a9aa8;           /* body copy */
-  --color-faint: #6c6c7c;         /* labels, captions, comments */
+  --color-dim: #9a9aa8;
+  /* body copy */
+  --color-faint: #6c6c7c;
+  /* labels, captions, comments */
   --color-primary: #7c7cff;
-  --color-mint: #9ae6b4;          /* "copied", and "compatible with" */
+  --color-mint: #9ae6b4;
+  /* "copied", and "compatible with" */
 
   /* The hero grid: three columns of avatars sliding past each other. The
      keyframe travels exactly -50%, which is where the duplicated second copy
