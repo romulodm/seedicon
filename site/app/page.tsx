@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import { AvatarShowcase } from "@/components/AvatarShowcase";
 import { FAQ } from "@/components/FAQ";
 import { Gallery } from "@/components/Gallery";
+import { HomeInContext } from "@/components/HomeInContext";
 import { UsageTabs } from "@/components/UsageTabs";
 import { formatCount, getPackageStats, LINKS } from "./lib/stats";
 import { CONTAINER } from "./lib/ui";
@@ -17,6 +18,7 @@ export const revalidate = 3600;
 
 const LEDE = "mb-7 max-w-[620px] text-[17px] leading-relaxed text-dim";
 const LINK = "text-primary hover:underline";
+const ACTION = "shrink-0 text-sm text-primary hover:underline";
 
 /** The landing page's section shell: a hairline, a small uppercase eyebrow
  *  instead of a heading, and the content under it. */
@@ -152,6 +154,26 @@ export default async function Home() {
             cover every option, including the square, rounded and circle shapes.
           </p>
           <UsageTabs />
+        </Section>
+
+        <Section
+          id="in-context"
+          title="In context"
+          action={
+            <a href="/playground" className={ACTION}>
+              Try your own seed →
+            </a>
+          }
+        >
+          <p className={LEDE}>
+            The same wallet address where people actually meet an avatar: a
+            profile card, a chat, notifications, a comment thread, a stack of
+            assignees. Everyone else in the panel is seeded from the kind of id
+            real apps pass in (an email, a username, a UUID), so you can judge
+            whether a style tells people apart, not only whether one avatar
+            looks good. Switch the style from the bar at the top of the panel.
+          </p>
+          <HomeInContext />
         </Section>
 
         <Section id="faq" title="FAQ">
