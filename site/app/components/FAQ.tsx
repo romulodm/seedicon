@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { SEEDICON_STYLES } from "seedicon";
 
+import { formatKb, ROOT_BYTES, STYLE_BYTES } from "../lib/bundleSizes";
 import { LINKS } from "../lib/stats";
 import { PROSE_CODE } from "../lib/ui";
 
@@ -110,10 +111,14 @@ export function FAQ() {
           <p>
             Yes, and it is the recommended thing to do if you picked one and
             stuck with it. Every style has its own entry point:{" "}
-            <code>import {`{ quilt }`} from &quot;seedicon/quilt&quot;</code>{" "}
-            pulls in that one renderer plus the shared core, and nothing else.{" "}
-            <code>seedicon/heraldry</code> is about 2.3KB gzipped against 21KB
-            for the root entry.
+            <code>import {`{ pixels }`} from &quot;seedicon/pixels&quot;</code>{" "}
+            pulls in that one renderer plus the shared core, and nothing else:{" "}
+            {formatKb(STYLE_BYTES.pixels)} minified and gzipped against{" "}
+            {formatKb(ROOT_BYTES)} for the root entry. The{" "}
+            <a href="#one-style" className={LINK}>
+              One style only
+            </a>{" "}
+            section above has the figure for every style.
           </p>
           <p>
             The root entry resolves styles by name, so it has to reference all{" "}
