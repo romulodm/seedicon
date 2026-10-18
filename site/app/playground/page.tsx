@@ -13,7 +13,7 @@ import {
 import Footer from "@/components/Footer"
 import Navbar from "@/components/Navbar"
 import CopyButton from "@/components/ui/CopyButton"
-import { BTN, CODE_BOX, CODE_PRE, CONTAINER } from "@/lib/ui"
+import { BTN, BTN_PRIMARY, CODE_BOX, CODE_PRE, CONTAINER } from "@/lib/ui"
 
 /** The slider's range, and the height the preview reserves so the panel
  *  does not resize under the cursor while you drag. */
@@ -30,6 +30,11 @@ const SHAPE_PERCENT: Record<SeediconShape, number> = {
     rounded: 22,
     circle: 50,
 }
+
+/** Edge of the downloaded PNG. 512px covers any profile-picture slot (most
+ *  platforms ask for 400 to 512px). The avatar is re-rendered at this size
+ *  rather than scaled up from the preview, so grid styles stay crisp. */
+const DOWNLOAD_SIZE = 512
 
 /** Selected and unselected states for the style and shape pickers. */
 const OPTION = "rounded-md border px-3 py-2 text-sm font-medium transition-colors cursor-pointer"
@@ -83,6 +88,58 @@ export default function PlaygroundPage() {
             ].join("\n"),
         [activeSeed, style, size, shape, customPercent, radius],
     )
+
+    /**
+     * PNG rather than JPG because the rounded and circle shapes have
+     * transparent corners, and JPG would fill them with a solid color.
+     *
+     * The browser does the rasterizing: the SVG is loaded as an image, drawn
+     * onto a canvas and read back as a PNG. A blob: URL is same-origin, so
+     * the canvas is not tainted and toBlob() is allowed.
+     */
+    async function downloadPng() {
+        const exportSvg = generateAvatar({
+            seed: activeSeed,
+            style,
+            size: DOWNLOAD_SIZE,
+            // A dragged radius is in px at the preview size, so it is
+            // recomputed from the percentage to keep the same proportion.
+            ...(customPercent === null
+                ? { shape }
+                : { radius: (percent / 100) * DOWNLOAD_SIZE }),
+        })
+        const svgUrl = URL.createObjectURL(new Blob([exportSvg], { type: "image/svg+xml" }))
+
+        try {
+            const image = new Image()
+            image.src = svgUrl
+            await image.decode()
+
+            const canvas = document.createElement("canvas")
+            canvas.width = DOWNLOAD_SIZE
+            canvas.height = DOWNLOAD_SIZE
+            canvas.getContext("2d")?.drawImage(image, 0, 0, DOWNLOAD_SIZE, DOWNLOAD_SIZE)
+
+            const png = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"))
+            if (!png) return
+
+            // The seed can be anything, so only letters and digits make it
+            // into the file name.
+            const slug = activeSeed.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").slice(0, 32) || "avatar"
+            const pngUrl = URL.createObjectURL(png)
+            const link = document.createElement("a")
+            link.href = pngUrl
+            link.download = `seedicon-${style}-${slug}.png`
+            link.click()
+            // Revoking synchronously can cancel the download in some browsers.
+            window.setTimeout(() => URL.revokeObjectURL(pngUrl), 1000)
+
+            setCopied("png")
+            window.setTimeout(() => setCopied(null), 1800)
+        } finally {
+            URL.revokeObjectURL(svgUrl)
+        }
+    }
 
     async function copy(key: string, value: string) {
         try {
@@ -171,6 +228,13 @@ export default function PlaygroundPage() {
                                 }
                             >
                                 {copied === "uri" ? "Copied data URI" : "Copy data URI"}
+                            </button>
+                            <button
+                                type="button"
+                                className={`${BTN_PRIMARY} w-full justify-center`}
+                                onClick={downloadPng}
+                            >
+                                {copied === "png" ? "Downloaded" : `Download PNG · ${DOWNLOAD_SIZE}px`}
                             </button>
                         </div>
                     </div>
