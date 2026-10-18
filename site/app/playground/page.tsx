@@ -223,7 +223,7 @@ export default function PlaygroundPage() {
                                 style={{ minHeight: MAX_SIZE }}
                             >
                                 <span
-                                    className="block drop-shadow-[0_10px_24px_rgba(0,0,0,0.45)]"
+                                    className="block drop-shadow-[0_10px_24px_var(--color-shadow)]"
                                     // generateAvatar() escapes its own output; the seed is
                                     // never interpolated into the markup unescaped.
                                     dangerouslySetInnerHTML={{ __html: svg }}

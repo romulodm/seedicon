@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, type CSSProperties, type ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 
 /**
  * The playground's "how does this look in my app" panel. The avatar shows up
  * at every size products ship it at, then in the places users actually meet
  * it: a browser tab, a navbar, a profile card, a chat, a comment thread,
- * notifications, an assignee stack and a member table — on a dark or a light
- * surface.
+ * notifications, an assignee stack and a member table. The `compact` variant,
+ * used on the home page, keeps only the middle grid of cards.
  *
  * It renders nothing itself. The playground hands it a `render` function that
  * already carries the chosen style and corner, so the panel cannot drift from
@@ -24,6 +24,11 @@ type Props = {
     /** The corner as a percentage of the size, for the rings in the
      *  assignee stack, which have to follow the avatar's own shape. */
     radiusPercent: number
+    /** Replaces the title block at the top left. The home page puts a style
+     *  picker here, since it has no other controls to drive the panel. */
+    header?: ReactNode
+    /** Only the cards grid: no browser window, size ladder or member table. */
+    compact?: boolean
 }
 
 /** The sizes avatars actually ship at, largest first, down to a favicon. */
@@ -40,32 +45,19 @@ const TEAM = [
 ]
 const [MARIA, USER, WALLET, LUCAS] = TEAM
 
-type Theme = "dark" | "light"
-
 /**
- * The panel's own colours, as custom properties so one toggle swaps every
- * surface at once. Dark reuses the site's tokens. Light is the only place the
- * site has light colours, which is why they are local to this component and
- * not in globals.css.
+ * The panel's colours, as custom properties so every card reads them from one
+ * place. They point at the site's own tokens: the panel is the site's dark
+ * surface, one step lighter so the cards inside it stand out.
  */
-const THEMES: Record<Theme, CSSProperties> = {
-    dark: {
-        "--c-bg": "var(--color-input)",
-        "--c-card": "var(--color-raised)",
-        "--c-sunk": "var(--color-background)",
-        "--c-border": "var(--color-border)",
-        "--c-fg": "var(--color-foreground)",
-        "--c-dim": "var(--color-dim)",
-    } as CSSProperties,
-    light: {
-        "--c-bg": "#f6f6f8",
-        "--c-card": "#ffffff",
-        "--c-sunk": "#eeeef2",
-        "--c-border": "#e3e3ea",
-        "--c-fg": "#17171c",
-        "--c-dim": "#5f5f6e",
-    } as CSSProperties,
-}
+const PANEL_VARS = {
+    "--c-bg": "var(--color-input)",
+    "--c-card": "var(--color-raised)",
+    "--c-sunk": "var(--color-background)",
+    "--c-border": "var(--color-border)",
+    "--c-fg": "var(--color-foreground)",
+    "--c-dim": "var(--color-dim)",
+} as CSSProperties
 
 const CARD = "min-w-0 rounded-xl border border-[var(--c-border)] bg-[var(--c-card)] p-4"
 const TITLE = "text-[13px] font-semibold"
@@ -89,80 +81,65 @@ function Card({ title, aside, className = "", children }: { title?: string; asid
     )
 }
 
-export default function InContext({ render, seed, radiusPercent }: Props) {
-    const [theme, setTheme] = useState<Theme>("dark")
-
+export default function InContext({ render, seed, radiusPercent, header, compact = false }: Props) {
     return (
         <section
             aria-label="Avatar in context"
-            style={THEMES[theme]}
-            className="grid gap-4 rounded-2xl border border-[var(--c-border)] bg-[var(--c-bg)] p-4 text-[var(--c-fg)] transition-colors sm:p-6"
+            style={PANEL_VARS}
+            className="grid gap-4 rounded-2xl border border-[var(--c-border)] bg-[var(--c-bg)] p-4 text-[var(--c-fg)] sm:p-6"
         >
-            <div className="flex flex-wrap items-center justify-between gap-3">
+            {header ?? (
                 <div>
                     <h2 className="text-base font-semibold">In context</h2>
                     <p className={META}>Your seed in the places users actually see it.</p>
                 </div>
-                <div className="inline-flex overflow-hidden rounded-[10px] border border-[var(--c-border)] bg-[var(--c-card)]">
-                    {(["dark", "light"] as const).map((option) => (
-                        <button
-                            key={option}
-                            type="button"
-                            aria-pressed={theme === option}
-                            onClick={() => setTheme(option)}
-                            className="
-                                cursor-pointer border-l border-[var(--c-border)] px-3 py-1.5 text-[13px] capitalize
-                                text-[var(--c-dim)] first:border-l-0 hover:text-[var(--c-fg)]
-                                aria-pressed:bg-primary/10 aria-pressed:text-primary
-                            "
-                        >
-                            {option}
-                        </button>
-                    ))}
-                </div>
-            </div>
+            )}
 
-            {/* Browser window: a tab whose favicon is the avatar at 16px,
-                then the app's navbar with the account button at 32px. */}
-            <div className="overflow-hidden rounded-xl border border-[var(--c-border)] bg-[var(--c-card)]">
-                <div className="flex items-end gap-1 bg-[var(--c-sunk)] px-3 pt-2">
-                    <div className="flex min-w-0 items-center gap-2 rounded-t-lg bg-[var(--c-card)] px-3 py-2 text-xs">
-                        <Svg html={render(16)} />
-                        <span className="truncate">acme · Dashboard</span>
-                        <span className="text-[var(--c-dim)]">×</span>
+            {compact ? null : (
+                <>
+                    {/* Browser window: a tab whose favicon is the avatar at 16px,
+                        then the app's navbar with the account button at 32px. */}
+                    <div className="overflow-hidden rounded-xl border border-[var(--c-border)] bg-[var(--c-card)]">
+                        <div className="flex items-end gap-1 bg-[var(--c-sunk)] px-3 pt-2">
+                            <div className="flex min-w-0 items-center gap-2 rounded-t-lg bg-[var(--c-card)] px-3 py-2 text-xs">
+                                <Svg html={render(16)} />
+                                <span className="truncate">acme · Dashboard</span>
+                                <span className="text-[var(--c-dim)]">×</span>
+                            </div>
+                            <div className={`hidden items-center gap-2 px-3 py-2 sm:flex ${META}`}>
+                                <Svg html={render(16, MARIA.id)} />
+                                <span>Maria Souza · Profile</span>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-between gap-3 border-t border-[var(--c-border)] px-4 py-3 text-[13px]">
+                            <span className="font-bold tracking-tight">acme</span>
+                            <span className="hidden gap-5 text-[var(--c-dim)] sm:flex">
+                                <span className="text-[var(--c-fg)]">Dashboard</span>
+                                <span>Projects</span>
+                                <span>Team</span>
+                                <span>Billing</span>
+                            </span>
+                            <span className="flex items-center gap-2">
+                                <span className={`hidden sm:inline ${META}`}>you</span>
+                                <Svg html={render(32)} />
+                            </span>
+                        </div>
                     </div>
-                    <div className={`hidden items-center gap-2 px-3 py-2 sm:flex ${META}`}>
-                        <Svg html={render(16, MARIA.id)} />
-                        <span>Maria Souza · Profile</span>
-                    </div>
-                </div>
-                <div className="flex items-center justify-between gap-3 border-t border-[var(--c-border)] px-4 py-3 text-[13px]">
-                    <span className="font-bold tracking-tight">acme</span>
-                    <span className="hidden gap-5 text-[var(--c-dim)] sm:flex">
-                        <span className="text-[var(--c-fg)]">Dashboard</span>
-                        <span>Projects</span>
-                        <span>Team</span>
-                        <span>Billing</span>
-                    </span>
-                    <span className="flex items-center gap-2">
-                        <span className={`hidden sm:inline ${META}`}>you</span>
-                        <Svg html={render(32)} />
-                    </span>
-                </div>
-            </div>
 
-            {/* Size ladder: the question here is whether the style survives
-                being small, so the sizes stop at a favicon. */}
-            <Card title="Sizes" aside={<span className={META}>128 → 16px</span>}>
-                <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
-                    {LADDER.map((size) => (
-                        <figure key={size} className="grid justify-items-center gap-1.5">
-                            <Svg html={render(size)} />
-                            <figcaption className="font-mono text-[10px] text-[var(--c-dim)]">{size}px</figcaption>
-                        </figure>
-                    ))}
-                </div>
-            </Card>
+                    {/* Size ladder: the question here is whether the style survives
+                        being small, so the sizes stop at a favicon. */}
+                    <Card title="Sizes" aside={<span className={META}>128 → 16px</span>}>
+                        <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
+                            {LADDER.map((size) => (
+                                <figure key={size} className="grid justify-items-center gap-1.5">
+                                    <Svg html={render(size)} />
+                                    <figcaption className="font-mono text-[10px] text-[var(--c-dim)]">{size}px</figcaption>
+                                </figure>
+                            ))}
+                        </div>
+                    </Card>
+                </>
+            )}
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {/* Profile card. The banner is the same avatar blown up and
@@ -278,37 +255,39 @@ export default function InContext({ render, seed, radiusPercent }: Props) {
                 </Card>
             </div>
 
-            {/* Member table: the one place your seed sits in a column of
-                others, which is how you judge whether a style tells people
-                apart. */}
-            <Card title="Members" aside={<span className={META}>{TEAM.length + 1}</span>} className="overflow-x-auto">
-                <table className="w-full min-w-[480px] text-left text-[13px]">
-                    <thead className={META}>
-                        <tr>
-                            <th className="pb-2 font-normal">Name</th>
-                            <th className="pb-2 font-normal">Role</th>
-                            <th className="pb-2 text-right font-normal">Last active</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {[{ id: seed, name: "You", role: "Owner", seen: "now" }, ...TEAM].map((member, index) => (
-                            <tr key={`${index}-${member.id}`} className="border-t border-[var(--c-border)]">
-                                <td className="py-2.5">
-                                    <span className="flex min-w-0 items-center gap-2.5">
-                                        <Svg html={render(28, member.id)} />
-                                        <span className="min-w-0">
-                                            <span className="block font-medium">{member.name}</span>
-                                            <span className="block max-w-[220px] truncate font-mono text-[11px] text-[var(--c-dim)]">{member.id}</span>
-                                        </span>
-                                    </span>
-                                </td>
-                                <td className={META}>{member.role}</td>
-                                <td className={`text-right ${META}`}>{member.seen}</td>
+            {compact ? null : (
+                /* Member table: the one place your seed sits in a column of
+                    others, which is how you judge whether a style tells people
+                    apart. */
+                <Card title="Members" aside={<span className={META}>{TEAM.length + 1}</span>} className="overflow-x-auto">
+                    <table className="w-full min-w-[480px] text-left text-[13px]">
+                        <thead className={META}>
+                            <tr>
+                                <th className="pb-2 font-normal">Name</th>
+                                <th className="pb-2 font-normal">Role</th>
+                                <th className="pb-2 text-right font-normal">Last active</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </Card>
+                        </thead>
+                        <tbody>
+                            {[{ id: seed, name: "You", role: "Owner", seen: "now" }, ...TEAM].map((member, index) => (
+                                <tr key={`${index}-${member.id}`} className="border-t border-[var(--c-border)]">
+                                    <td className="py-2.5">
+                                        <span className="flex min-w-0 items-center gap-2.5">
+                                            <Svg html={render(28, member.id)} />
+                                            <span className="min-w-0">
+                                                <span className="block font-medium">{member.name}</span>
+                                                <span className="block max-w-[220px] truncate font-mono text-[11px] text-[var(--c-dim)]">{member.id}</span>
+                                            </span>
+                                        </span>
+                                    </td>
+                                    <td className={META}>{member.role}</td>
+                                    <td className={`text-right ${META}`}>{member.seen}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </Card>
+            )}
         </section>
     )
 }
