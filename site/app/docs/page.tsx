@@ -157,7 +157,7 @@ function Table({ children }: { children: ReactNode }) {
 const BADGE =
   "rounded-full border border-border-strong px-2.5 py-[3px] font-mono text-[11px] text-faint transition-colors hover:text-foreground";
 const BADGE_COMPAT =
-  "rounded-full border border-[#2f5c43] px-2.5 py-[3px] font-mono text-[11px] text-mint";
+  "rounded-full border border-mint/35 px-2.5 py-[3px] font-mono text-[11px] text-mint";
 
 export default function Docs() {
   return (
