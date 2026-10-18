@@ -37,6 +37,8 @@
   --color-primary: #7c7cff;
   --color-mint: #9ae6b4;
   /* "copied", and "compatible with" */
+  --color-shadow: rgb(0 0 0 / 0.45);
+  /* the drop shadow under the playground avatar */
 
   /* The hero grid: three columns of avatars sliding past each other. The
      keyframe travels exactly -50%, which is where the duplicated second copy
@@ -54,4 +56,8 @@
       transform: translateY(-50%);
     }
   }
+}
+
+:root {
+  color-scheme: dark;
 }
