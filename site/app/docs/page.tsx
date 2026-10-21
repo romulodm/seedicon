@@ -202,15 +202,15 @@ export default function Docs() {
               <Code>{`import { generateAvatar } from "seedicon";
 
 // Raw <svg> markup as a string
-const svg = generateAvatar({ seed: user.id, style: "quilt", size: 64 });
+const svg = generateAvatar({ seed: user.id, style: "glass", size: 64 });
 
 // A data URI, for <img src> or CSS background-image
 import { generateAvatarDataUri } from "seedicon";
-const src = generateAvatarDataUri({ seed: user.id, style: "quilt" });
+const src = generateAvatarDataUri({ seed: user.id, style: "glass" });
 
 // Or the React component
 import { Avatar } from "seedicon/react";
-<Avatar seed={user.id} style="quilt" size={40} shape="circle" />;`}</Code>
+<Avatar seed={user.id} style="glass" size={40} shape="circle" />;`}</Code>
               <P>
                 The seed is whatever already identifies the user: a UUID, a
                 database id, a wallet address, an email. Nothing is stored,
@@ -484,10 +484,10 @@ const svg = ${doc.export}({ seed: user.id, shape: "circle" });`}</Code>
                 renderer plus the shared core, which is the seeded hash, the SVG
                 wrapper and the corner clip. Nothing else ships.
               </P>
-              <Code>{`import { quilt, quiltDataUri } from "seedicon/quilt";
+              <Code>{`import { glass, glassDataUri } from "seedicon/glass";
 
-const svg = quilt({ seed: user.id, size: 40, shape: "circle" });
-const src = quiltDataUri({ seed: user.id, size: 40, shape: "circle" });`}</Code>
+const svg = glass({ seed: user.id, size: 40, shape: "circle" });
+const src = glassDataUri({ seed: user.id, size: 40, shape: "circle" });`}</Code>
               <P>
                 The single-style functions take the same options as{" "}
                 <code>generateAvatar</code> minus <code>style</code>, which the
@@ -523,10 +523,10 @@ const src = quiltDataUri({ seed: user.id, size: 40, shape: "circle" });`}</Code>
                 convenience, call the single-style function and render the
                 markup yourself. It is four lines.
               </P>
-              <Code>{`import { quilt } from "seedicon/quilt";
+              <Code>{`import { glass } from "seedicon/glass";
 
 function Avatar({ seed, size = 40 }: { seed: string; size?: number }) {
-  const svg = quilt({ seed, size, shape: "circle" });
+  const svg = glass({ seed, size, shape: "circle" });
   return (
     <span
       style={{ lineHeight: 0 }}

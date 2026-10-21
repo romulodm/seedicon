@@ -131,6 +131,13 @@ export const GALLERY_SEEDS: Partial<Record<SeediconStyle, readonly string[]>> = 
     "a6e7164e-f896-4f73-89ae-fc92a232f146",
     "1695908f-ca4e-499b-a5b0-656ae88eb2f1",
   ],
+  glass: [
+    "021d03da-c65b-4f1b-b2ef-33425e78bafe",
+    "bee5882e-81f1-4c45-bf92-34458c776a0b",
+    "e9ff3a3f-c62e-4783-a4d8-72c8b61267b2",
+    "8f271715-cb50-469c-8e72-dd5c8ef39917",
+    "c1f5c34b-c97f-4e84-a9de-07bc156ff611",
+  ],
 };
 
 export function gallerySeedsFor(style: SeediconStyle): readonly string[] {

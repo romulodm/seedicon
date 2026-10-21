@@ -13,8 +13,11 @@ import type { SeediconStyle } from "seedicon";
  * These are constants rather than a build step because they only move when a
  * renderer changes. Re-measure when one does. The Record type makes adding a
  * style to SeediconStyle a type error here until its size is filled in.
+ *
+ * `glass` and the root figure were measured later, against the build that
+ * added `glass`, with the same method.
  */
-export const ROOT_BYTES = 13314;
+export const ROOT_BYTES = 14286;
 
 export const STYLE_BYTES: Record<SeediconStyle, number> = {
   pixels: 1263,
@@ -35,6 +38,8 @@ export const STYLE_BYTES: Record<SeediconStyle, number> = {
   marble: 1483,
   waves: 1165,
   gradient: 1212,
+  // Carries the eight letterform paths it blurs, like pixelart's sprites.
+  glass: 1910,
 };
 
 /** Bytes as kilobytes with one decimal, the way bundle analysers print them. */

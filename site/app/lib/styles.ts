@@ -215,6 +215,17 @@ export const STYLE_DOCS: StyleDoc[] = [
     ],
     goodFor: "Tiny avatars, and anywhere the markup budget is tight.",
   },
+  {
+    name: "glass",
+    tagline: "Two blurred white glows over a saturated color.",
+    export: "glass",
+    body: [
+      "Two white shapes at 60% opacity, blurred so far past their outlines that only a soft glow is left, over a saturated background. The seed picks the background hue, which two of eight shapes are drawn, and where each one sits and how far it is rotated.",
+      "The artwork is DiceBear's Glass, dedicated to the public domain under CC0 1.0. The eight shapes are the letters of the word \"gradient\", which is the joke of the original: blurred this hard, a letter stops being a letter and is only a differently shaped brush. The randomization is seedicon's own, so the same seed does not produce the same picture that @dicebear/glass would.",
+      "The background does not come from the palette every other style shares. The glow needs a saturated, mid-lightness ground to lift out of, and on the near-white or near-black colors that palette can produce it either washes out or disappears. The original also blends the layers with mix-blend-mode: screen, which does nothing to a white source, so it is dropped here: the pixels are identical, and the avatar renders the same in SVG rasterizers that never implemented blend modes.",
+    ],
+    goodFor: "Colorful avatars where a flat color is too plain and a pattern too busy.",
+  },
 ];
 
 /** Lookup by style name, for components that iterate SEEDICON_STYLES. */
