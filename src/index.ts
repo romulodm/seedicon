@@ -23,6 +23,7 @@ import { renderMarble } from "./styles/marble.js";
 import { renderWaves } from "./styles/waves.js";
 import { renderGradient } from "./styles/gradient.js";
 import { renderRing } from "./styles/ring.js";
+import { renderGlass } from "./styles/glass.js";
 
 /** Every style this package documents, tests and maintains. */
 export type SeediconStyle =
@@ -42,7 +43,8 @@ export type SeediconStyle =
   | "terrain"
   | "marble"
   | "waves"
-  | "gradient";
+  | "gradient"
+  | "glass";
 
 /**
  * Styles that still resolve but are no longer supported.
@@ -50,8 +52,7 @@ export type SeediconStyle =
  * @deprecated `ring` is kept only so that code written against an earlier
  * version keeps working: it renders exactly what it always did and it always
  * will. It is not in {@link SEEDICON_STYLES}, not in the docs, and not part
- * of what this package is maintained for. `braid` is the closest
- * replacement.
+ * of what this package is maintained for.
  */
 export type SeediconLegacyStyle = "ring";
 
@@ -83,6 +84,7 @@ const RENDERERS: Record<SeediconStyle | SeediconLegacyStyle, StyleRenderer> = {
   waves: renderWaves,
   gradient: renderGradient,
   ring: renderRing,
+  glass: renderGlass,
 };
 
 /**
@@ -153,6 +155,7 @@ export const SEEDICON_STYLES: readonly SeediconStyle[] = [
   "marble",
   "waves",
   "gradient",
+  "glass",
 ];
 
 export type { SeediconShape, StyleOptions, StyleRenderer } from "./core.js";

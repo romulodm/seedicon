@@ -18,6 +18,7 @@ const STYLES = [
   "marble",
   "waves",
   "gradient",
+  "glass",
   // Deprecated, still built so existing imports of `seedicon/ring` keep
   // resolving. Not exported from the docs, not in SEEDICON_STYLES.
   "ring",

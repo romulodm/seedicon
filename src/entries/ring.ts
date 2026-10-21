@@ -10,8 +10,7 @@ import { renderRing } from "../styles/ring.js";
  * an earlier version keeps resolving and keeps rendering the same avatars —
  * nothing here has changed and nothing will. It is not listed in
  * `SEEDICON_STYLES`, not shown in the docs, and not part of what this
- * package is tested or maintained for. Pick another style for new code;
- * `braid` is the closest replacement in spirit.
+ * package is tested or maintained for. Pick another style for new code.
  */
 export function ring(options: StyleOptions): string {
   return renderAvatar(renderRing, "ring", options);

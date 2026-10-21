@@ -69,7 +69,7 @@ optional peer dependency, needed only if you import from `seedicon/react`.
 ```ts
 generateAvatar({
   seed: "anything",   // required — the only thing that determines the output
-  style: "pixels",    // one of the 21 style names — default "pixels"
+  style: "pixels",    // one of the 18 style names — default "pixels"
   size: 64,           // SVG width/height in user units — default 64
   shape: "square",    // "square" | "rounded" | "circle" — default "square"
   radius: 0,          // exact corner radius; overrides `shape` when passed
@@ -98,7 +98,7 @@ artwork, so it behaves identically for every style.
 
 ## Styles
 
-Seventeen styles ship in the package — pixel grids, identicons, generative
+Eighteen styles ship in the package — pixel grids, identicons, generative
 patterns and sprite-based characters. `SEEDICON_STYLES` is the full list at
 runtime, in order:
 
@@ -114,7 +114,7 @@ is rendered, described and seedable side by side at
 
 ### Importing a single style
 
-The package root resolves styles by name, so it references all eighteen and
+The package root resolves styles by name, so it references all nineteen and
 no bundler can drop the ones you never call. If you only use one style, import
 it directly and you get that renderer plus the shared core — nothing else:
 

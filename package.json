@@ -216,6 +216,16 @@
         "default": "./dist/ring.cjs"
       }
     },
+    "./glass": {
+      "import": {
+        "types": "./dist/glass.d.ts",
+        "default": "./dist/glass.js"
+      },
+      "require": {
+        "types": "./dist/glass.d.cts",
+        "default": "./dist/glass.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [
